@@ -18,6 +18,7 @@
 real-estate-pricing-expert/
 ├── README.md                          # 本文件
 ├── SUBMISSION-CHECKLIST.md            # 提交物验收清单
+├── TRIAL-RUN.md                       # 试运行记录（端到端样例）
 ├── LICENSE                            # 许可证
 ├── pack.json                          # 包清单（id / version / schemaVersion / 口径声明）
 ├── experts/
