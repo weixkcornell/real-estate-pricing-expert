@@ -34,10 +34,10 @@ real-estate-pricing-expert/
 ├── quality-policies/
 │   └── rep-valuation-quality.json     # 质量门禁（硬门 / 软门）
 ├── skills/
-│   ├── hedonic-pricing/SKILL.md + references/
+│   ├── hedonic-pricing/SKILL.md + references/ + scripts/   # 含 hedonic_model.py / value_demo.py / sample_data.csv
 │   ├── price-index/SKILL.md + references/
 │   ├── spatial-ml-valuation/SKILL.md + references/
-│   └── rent-income/SKILL.md + references/
+│   └── rent-income/SKILL.md + references/ + scripts/       # 含 rent_income.py / rent_sample.csv
 ├── data-contracts/
 │   └── capability-contract.csv        # 数据源能力契约表
 └── source/
@@ -62,12 +62,28 @@ real-estate-pricing-expert/
 
 `rep-valuation`：数据底座核验（rep-002）→ 视角 A 交易定价研判（rep-001）/ 视角 B 租金与收益法研判（rep-001）→ 融合成文（docs-coordinator）。
 
-## 五、使用方法
+## 五、可执行代码
+
+方法论不是只有文档——本包附**零依赖 Python 代码**（仅标准库，任何环境可直接运行）：
+
+| 脚本 | 用途 |
+|---|---|
+| `skills/hedonic-pricing/scripts/hedonic_model.py` | 特征价格模型：OLS 估计、属性隐含价格、预测、留一交叉验证 |
+| `skills/hedonic-pricing/scripts/value_demo.py` | 模型价值实测：朴素均价法 vs 特征价格模型（复现报告数字） |
+| `skills/rent-income/scripts/rent_income.py` | 租金收益率 / 价格租金比 / Cap Rate 定价 |
+
+```bash
+python3 skills/hedonic-pricing/scripts/value_demo.py
+python3 skills/rent-income/scripts/rent_income.py --rent-csv skills/rent-income/scripts/rent_sample.csv \
+    --price-list 50210 47700 --price-labels 挂牌口径 成交口径 --fin-rate 0.0305
+```
+
+## 六、使用方法
 
 1. 将本包放入专家平台的包目录；
 2. 触发词：「房地产定价」「房价估值」「租金定价」「价格指数」「价格租金比」；
 3. 首次运行先补 `data-contracts/capability-contract.csv` 的真实数据源与 `knowledge/experts/rep-001/` 的溯源材料。
 
-## 六、免责声明
+## 七、免责声明
 
 本包输出为方法论与量化建模参考，不构成投资建议、估值报告或法律意见。正式估值须由具备资质的估价机构出具。所有结论必须标注数据来源与口径。

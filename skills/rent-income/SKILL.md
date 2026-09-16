@@ -16,6 +16,7 @@ metadata:
 ## §0 引用（先读）
 
 - 权威附件：`references/rent-income-checklist.md`。
+- 可执行代码：`scripts/rent_income.py`（零依赖：单位租金分布与面积效应、毛/净租金收益率、价格租金比、Cap Rate 定价与敏感性）；`scripts/rent_sample.csv`（示例数据）。用法见脚本 `--help`。
 - 方法来源：Song, Wilhelmsson & Yang (2020, 北京租金指数)；Shanghai 价格租金比 (2021, RSUE)；Ghysels, Plazzi & Valkanov (2007, EFM)；Fisher et al. (1994, JRER)；France 租金动态 (2020)；France 大数据租金 (2022, PLOS ONE)；Chen (1996, Urban Studies)；Wu, Gyourko & Deng (2012/2016, RSUE)。
 
 ## §1 建模步骤（怎么做）
