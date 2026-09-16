@@ -1,0 +1,59 @@
+{
+  "id": "rep-valuation",
+  "name": "房地产定价全流程场景",
+  "description": "面向中国房地产市场的端到端定价场景：先核验数据底座，再分别从「交易定价」与「租金与收益法」两个视角研判，最后融合成一份带区间、方法与口径的定价报告。",
+  "version": "0.1.0",
+  "schemaVersion": 2,
+  "domain": "valuation",
+  "intents": [
+    "房地产定价",
+    "房价估值",
+    "租金定价",
+    "价格指数",
+    "价格租金比"
+  ],
+  "requiredCapabilities": [
+    "rep.hedonic",
+    "rep.priceindex",
+    "rep.spatial",
+    "rep.ml.valuation",
+    "rep.rent.income"
+  ],
+  "routingPolicy": {
+    "candidateHints": ["rep-001", "rep-002", "docs-coordinator"]
+  },
+  "knowledgePolicy": { "required": ["knowledge:rep-001"] },
+  "toolPolicy": { "allowed": [] },
+  "experts": ["rep-001", "rep-002", "docs-coordinator"],
+  "tasks": [
+    {
+      "subject": "数据底座核验",
+      "description": "核对目标城市/物业类型的成交、挂牌、租金与官方指数数据：指标、最新值、来源、口径、指标代码、截至期。产出数据底座表；后续所有数字引用必须与底座一致；口径冲突显式并列，不静默择优。",
+      "expert": "rep-002"
+    },
+    {
+      "subject": "视角 A · 交易定价研判",
+      "description": "基于数据底座做交易定价：先完整阅读 skills/hedonic-pricing/SKILL.md 与 skills/spatial-ml-valuation/SKILL.md。按属性四类建 hedonic 模型，检验并处理空间依赖/异质；样本充足时叠加 ML（RF/XGBoost）并配 SHAP 归因。产出：估值点估计 + 区间 + 属性贡献分解 + 稳健性检验。",
+      "dependsOn": [0],
+      "expert": "rep-001"
+    },
+    {
+      "subject": "视角 B · 租金与收益法研判",
+      "description": "基于数据底座做租金与收益法定价：先完整阅读 skills/rent-income/SKILL.md 与 skills/price-index/SKILL.md。估计 hedonic 租金模型与租金指数；对商业地产按城市/类型标定 Cap Rate 或做 DCF；构造价格租金比并用用户成本法检验基本面偏离。产出：租金水平/指数 + Cap Rate/价值区间 + 租价背离判断。",
+      "dependsOn": [0],
+      "expert": "rep-001"
+    },
+    {
+      "subject": "融合成文",
+      "description": "交叉比对视角 A 与视角 B：若交易定价与收益法结论不一致，须做差异归因（口径/样本/方法/周期）。按 output-templates/rep-valuation.json 输出：结论先行、交叉验证、差异归因、风险提示、附录（口径与数据底座）。",
+      "dependsOn": [1, 2],
+      "expert": "docs-coordinator"
+    }
+  ],
+  "deliverable": "房地产定价报告（结构化报告 + 数据底座表 + 方法与口径附录）+ GATE 验收文件",
+  "skill": {
+    "id": "hedonic-pricing",
+    "purpose": "为交易定价任务提供属性分解与建模工艺",
+    "appliesToTaskIndex": 1
+  }
+}

@@ -1,0 +1,6 @@
+﻿capability,method,input_schema,output_schema,caliber,unit,frequency,lag,dataView,auth,rate_limit,sla,notes
+rep.flow.wangqian.read,read,{city:string,period:string,district:string},{series:number[],dates:string[]},住建部门商品房/存量房网签备案成交口径,元/㎡,月更,T+7,external,平台密钥库,10 QPS,工作日 99%,成交口径；作为估值主源
+rep.listing.price.read,read,{city:string,district:string,community:string},{series:number[],dates:string[]},房地产中介平台二手房挂牌报价口径,元/㎡,日更,T+1,external,平台密钥库,20 QPS,95%,报价口径；须折算出成交口径后使用
+rep.rent.monthly.read,read,{city:string,district:string,layout:string},{series:number[],dates:string[]},住房租赁市场月度租金挂牌/成交口径,元/月,月更,T+3,external,平台密钥库,10 QPS,95%,租金口径；与售价口径不同，不得混用
+rep.stats.70city.read,read,{city:string,indicator:string},{series:number[],dates:string[]},国家统计局70个大中城市住宅销售价格指数口径,指数（定基=100）,月更,T+15,external,公开,5 QPS,工作日 99%,指数口径；首值=100，禁当绝对量
+rep.land.parcel.read,read,{city:string,district:string},{series:number[],dates:string[]},土地出让成交口径,元/㎡（楼面价）,季更,T+30,external,平台密钥库,5 QPS,90%,土地口径；用于成本法与供给分析

@@ -1,0 +1,28 @@
+{
+  "id": "rep-valuation.output",
+  "version": "0.1.0",
+  "schemaVersion": 2,
+  "appliesToScenario": "rep-valuation",
+  "documentStructure": {
+    "pattern": "总-分-总",
+    "sections": [
+      { "name": "卷首速览", "required": true, "notes": "3-5 条要点：定价对象、估值区间、核心方法、关键结论、主要限制" },
+      { "name": "估值结论与区间", "required": true, "notes": "结论先行；给点估计 + 区间，不做单点断言；每个判断挂一个量化锚" },
+      { "name": "方法与模型", "required": true, "notes": "说明方法族（hedonic/指数/空间/ML/收益法）、函数形式、空间处理与选择理由" },
+      { "name": "数据底座与口径", "required": true, "notes": "来源 + 指标代码 + 截至期 + 口径（网签/挂牌/租金/统计）；多源冲突显式说明" },
+      { "name": "稳健性与敏感性", "required": true, "notes": "换函数形式/换属性集/分样本/替代方法交叉验证的结果" },
+      { "name": "风险提示与限制", "required": true, "notes": "每个乐观判断后紧跟边界句；每个悲观判断后给可对冲条件" },
+      { "name": "附录（数据与口径）", "required": true, "notes": "来源披露 + 指标代码 + 数据底座表 + 免责声明" }
+    ]
+  },
+  "dataRules": {
+    "annotationLevels": ["测算", "估算", "研判推断", "待补"],
+    "sourceFormat": "（来源，机构，截至 年-月；口径：网签/挂牌/租金/统计）",
+    "forbidFabricatedNumbers": true,
+    "notes": "改数只改数据底座一处，全文同步；两源冲突显式说明，不得静默择优；挂牌价与成交价不得混用"
+  },
+  "rendering": {
+    "format": "markdown → HTML5 → PDF",
+    "notes": "视觉 register：科技蓝主色 + 中性灰辅色；封面含对象/口径/日期，封底含免责声明；图表选型——价格区间用误差条、属性贡献用条形、空间分布用热力，无数字不绘"
+  }
+}

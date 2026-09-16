@@ -1,0 +1,51 @@
+{
+  "id": "rep-valuation.quality",
+  "version": "0.1.0",
+  "schemaVersion": 2,
+  "appliesToScenario": "rep-valuation",
+  "gates": [
+    {
+      "id": "no-banned-tokens",
+      "severity": "hard",
+      "description": "禁例 token 0 命中：委托方要求脱敏的量值与禁用表述逐 token 扫描",
+      "bannedTokens": ["内网地址", "客户实名", "密钥", "未公开成交底价"]
+    },
+    {
+      "id": "numbers-match-dataset",
+      "severity": "hard",
+      "description": "正文所有数字与数据底座表逐 token 一致"
+    },
+    {
+      "id": "caliber-declared",
+      "severity": "hard",
+      "description": "每个数字均标注来源 + 口径 + 截至期；挂牌与成交口径不得混用"
+    },
+    {
+      "id": "interval-required",
+      "severity": "hard",
+      "description": "估值结论必须给出区间，禁止单点断言"
+    },
+    {
+      "id": "render-no-overflow",
+      "severity": "hard",
+      "description": "渲染 0 溢出 + 对比度 AA（双视口检查）"
+    },
+    {
+      "id": "placeholder-clean",
+      "severity": "hard",
+      "description": "全文无未填占位符残留"
+    },
+    {
+      "id": "layout-audit",
+      "severity": "soft",
+      "description": "排版审计 0 问题"
+    },
+    {
+      "id": "outline-match",
+      "severity": "soft",
+      "description": "章节大纲与 output-templates/rep-valuation.json 逐项对照"
+    }
+  ],
+  "maxRepairRounds": 2,
+  "notes": "硬门未过 → 完成被阻断并返回修正指引；软门 → 警告放行（gate_warnings）；通过后产出 0-100 质量分烙进任务标题（质 NN）。建议落盘 GATE 文件（哈希 + 抽样截图）。"
+}
