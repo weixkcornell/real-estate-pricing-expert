@@ -62,20 +62,40 @@ real-estate-pricing-expert/
 
 `rep-valuation`：数据底座核验（rep-002）→ 视角 A 交易定价研判（rep-001）/ 视角 B 租金与收益法研判（rep-001）→ 融合成文（docs-coordinator）。
 
-## 五、可执行代码
+## 五、可执行代码（27 个方法，零依赖）
 
-方法论不是只有文档——本包附**零依赖 Python 代码**（仅标准库，任何环境可直接运行）：
+方法论不只是文档——本包附**纯 Python 标准库实现的方法库**，每条方法严格对应一篇论文：
 
-| 脚本 | 用途 |
-|---|---|
-| `skills/hedonic-pricing/scripts/hedonic_model.py` | 特征价格模型：OLS 估计、属性隐含价格、预测、留一交叉验证 |
-| `skills/hedonic-pricing/scripts/value_demo.py` | 模型价值实测：朴素均价法 vs 特征价格模型（复现报告数字） |
-| `skills/rent-income/scripts/rent_income.py` | 租金收益率 / 价格租金比 / Cap Rate 定价 |
+| 模块 | 方法数 | 覆盖 |
+|---|---|---|
+| `scripts/core.py` | — | 共享数值核心（矩阵 / OLS / WLS / 指标 / 交叉验证） |
+| `scripts/data_adapter.py` | — | 智见数据层适配（口径归一、单位换算、数据集构建、两源交叉校验） |
+| `skills/hedonic-pricing/scripts/hedonic_model.py` | 5 | 基础 Hedonic、Box-Cox、时间虚拟指数、属性价格时变、空间扩展法 |
+| `skills/price-index/scripts/price_index.py` | 4 | BMN 重复销售、Case-Shiller 三阶段 WLS、混合指数、ML 时外误差指数 |
+| `skills/spatial-ml-valuation/scripts/spatial_model.py` | 6 | 空间权重、Moran's I、SAR、SEM、GWR、回归克里金 |
+| `skills/spatial-ml-valuation/scripts/ml_valuation.py` | 6 | CART、随机森林、梯度提升、高斯过程 AVM（带区间）、排列重要性、部分依赖 |
+| `skills/rent-income/scripts/rent_model.py` | 6 | hedonic 租金、分层时间虚拟租金指数、匹配价格租金比、用户成本法、Cap Rate、DCF |
+
+**完整方法矩阵（论文 → 方法 → 公式 → 数据 → 代码）见 `scripts/README.md`。**
 
 ```bash
-python3 skills/hedonic-pricing/scripts/value_demo.py
-python3 skills/rent-income/scripts/rent_income.py --rent-csv skills/rent-income/scripts/rent_sample.csv \
-    --price-list 50210 47700 --price-labels 挂牌口径 成交口径 --fin-rate 0.0305
+# 价格指数（BMN + Case-Shiller）
+python3 skills/price-index/scripts/price_index.py --pairs skills/price-index/scripts/sample_pairs.csv --method all
+
+# 空间计量（Moran / SAR / SEM / GWR / 克里金）
+python3 skills/spatial-ml-valuation/scripts/spatial_model.py \
+    --data skills/spatial-ml-valuation/scripts/sample_spatial.csv --y 单价 --x 面积 楼龄 --coord x y --method all
+
+# 机器学习 AVM
+python3 skills/spatial-ml-valuation/scripts/ml_valuation.py \
+    --data skills/spatial-ml-valuation/scripts/sample_spatial.csv --y 单价 --x 面积 楼龄 x y --method all
+
+# 租金指数 + 用户成本
+python3 skills/rent-income/scripts/rent_model.py --data skills/rent-income/scripts/rent_panel.csv \
+    --rent "月租(元)" --x "面积㎡" --time 期
+
+# 智见数据层自检
+python3 scripts/data_adapter.py
 ```
 
 ## 六、使用方法

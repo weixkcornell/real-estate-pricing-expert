@@ -69,8 +69,8 @@ def main():
     print("  MAPE          : %.2f%%" % nm["MAPE"])
 
     # ---------- 特征价格模型 ----------
-    model = HedonicModel(Y, X, log_y=True).fit(data)
-    m = model.fit_metrics(data)
+    model = HedonicModel(Y, X, form="log-linear").fit(data)
+    m = model.evaluate(data)
 
     print()
     print("=" * 62)

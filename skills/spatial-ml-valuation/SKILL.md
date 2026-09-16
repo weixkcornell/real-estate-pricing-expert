@@ -16,6 +16,7 @@ metadata:
 ## §0 引用（先读）
 
 - 权威附件：`references/spatial-ml-checklist.md`。
+- 可执行代码：`scripts/spatial_model.py`（空间权重 / Moran's I / SAR / SEM / GWR / 回归克里金）；`scripts/ml_valuation.py`（CART / 随机森林 / 梯度提升 / 高斯过程 AVM 带区间 / 排列重要性 / 部分依赖）；`scripts/sample_spatial.csv`。用法见 `<pack>/scripts/README.md`。
 - 方法来源：Brunsdon, Fotheringham & Charlton (1996)；Bitter et al. (2007)；Pace & LeSage (2004)；Helbich et al. (2014)；Cracow 租金 SAR-GWR (2019, IJGI)；Ho et al. (2021)；Irish AVM (2022, JREFE)；Kok et al. (2017)；Calainho et al. (2024)；Istanbul ML (2025, Buildings)。
 
 ## §1 建模步骤（怎么做）

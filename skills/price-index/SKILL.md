@@ -16,6 +16,7 @@ metadata:
 ## §0 引用（先读）
 
 - 权威附件：`references/index-checklist.md`。
+- 可执行代码：`scripts/price_index.py`（BMN 重复销售 / Case-Shiller 三阶段 WLS / Case-Quigley 混合 / Calainho ML 时外误差指数）；`scripts/sample_pairs.csv`。用法见 `<pack>/scripts/README.md`。
 - 方法来源：Bailey, Muth & Nourse (1963, JASA)；Case & Shiller (1989, AER)；Case & Quigley (1991, REStat)；Case, Pollakowski & Wachter (1991, REE)；Chen & Harding (2016, JREFE)；Oust et al. (2019, JREFE)；Calainho et al. (2024, JREFE)。
 
 ## §1 构建步骤（怎么做）
