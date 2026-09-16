@@ -164,9 +164,9 @@ class WangqianAdapter(CsvFileAdapter):
     unit = "元/㎡"
     frequency = "月更"
     lag = "T+7"
-    auth = "本地 CSV（自动取数需平台密钥库）"
+    auth = "本地 CSV；自动取数走平台源 zyt（政研通，https://dss.ke.com）"
     status = Status.PARTIAL
-    description = "网签备案成交数据标准化。中国唯一可靠的成交价 microdata 来源。"
+    description = "网签备案成交数据标准化。中国唯一可靠的成交价 microdata 来源。平台侧首选源=zyt 政研通。"
     standard_fields = ["period", "city", "district", "community", "area", "total_price", "unit_price"]
     required_fields = ["period", "unit_price"]
     numeric_fields = ["area", "total_price", "unit_price"]
@@ -237,9 +237,9 @@ class ListingAdapter(CsvFileAdapter):
     unit = "元/㎡"
     frequency = "日更"
     lag = "T+1"
-    auth = "本地 CSV（自动取数需平台密钥库）"
+    auth = "本地 CSV；自动取数走平台源 beike（贝壳 MCP，https://building.ke.com/mcp）"
     status = Status.PARTIAL
-    description = "多平台挂牌快照合并、价差检出、可比筛选。"
+    description = "多平台挂牌快照合并、价差检出、可比筛选。平台侧首选源=beike 布丁 MCP。"
     standard_fields = ["platform", "community", "layout", "area", "floor", "orientation",
                        "build_year", "total_price", "unit_price", "listing_id"]
     required_fields = ["unit_price"]
@@ -351,9 +351,9 @@ class RentAdapter(CsvFileAdapter):
     unit = "元/月"
     frequency = "月更"
     lag = "T+3"
-    auth = "本地 CSV（自动取数需平台密钥库）"
+    auth = "本地 CSV；自动取数走平台源 zyt（政研通）"
     status = Status.PARTIAL
-    description = "租金标准化：等效月租、单位租金、面积效应、市场分割检查。"
+    description = "租金标准化：等效月租、单位租金、面积效应、市场分割检查。平台侧首选源=zyt 政研通。"
     standard_fields = ["period", "community", "layout", "area", "rent_monthly", "floor", "source"]
     required_fields = ["rent_monthly"]
     numeric_fields = ["area", "rent_monthly"]
@@ -440,9 +440,9 @@ class LandParcelAdapter(CsvFileAdapter):
     unit = "元/㎡（楼面价）"
     frequency = "季更"
     lag = "T+30"
-    auth = "本地 CSV（自动取数需平台密钥库）"
+    auth = "本地 CSV；自动取数走平台源 zyt（政研通）"
     status = Status.PARTIAL
-    description = "土地出让标准化：楼面价归一、配建/自持条件标注、地价段统计。"
+    description = "土地出让标准化：楼面价归一、配建/自持条件标注、地价段统计。平台侧首选源=zyt 政研通。"
     standard_fields = ["period", "city", "district", "land_area", "floor_area",
                        "total_price", "floor_price", "use_type", "conditions"]
     required_fields = ["floor_price"]

@@ -1,6 +1,6 @@
 {
   "id": "real-estate-pricing-expert",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "schemaVersion": 2,
   "name": "房地产定价专家包（置价）",
   "description": "面向中国房地产市场的定价方法论专家包。方法底座提炼自国外房地产核心期刊（JREFE / REE / JHE / JUE / RSUE 等）关于租金定价与交易定价的**26 篇文献**，已全部落为结构化知识块；覆盖特征价格、重复销售与混合价格指数、空间计量与地理加权回归、机器学习与自动估值（AVM）、租金与收益法（Cap Rate / DCF / 用户成本），并补齐中国实务最高频的**比较法**与**成本法/假设开发法**工艺。包内含 2 位专家（置价 · 房地产定价模型专家；底座 · 数据口径核验员）、1 个含方法层级判定与分歧容差的定价场景 DAG、6 个交付工艺 Skill、5 个可运行数据适配器、conformal 区间出口、合成基准与回归测试、可执行质量门禁。",
@@ -28,6 +28,37 @@
       "P3-1 tools/ 喧宾夺主": "发布与授权脚本移至独立 ops/ 目录，README 发布规程压缩为一段引用",
       "P3-2 宣称与实现落差": "统一措辞：自研梯度提升 ≠ XGBoost，排列重要性 ≠ SHAP，MGWR/邻接权重标注未实现；清除 5 处幽灵引用并新增 source/check_manifest.py 自动校验",
       "P3-3 缺专家自评 eval": "新增 eval/（带标准答案与 rubric 的定价案例 + 运行器）"
+    },
+    "platformAdaptation": {
+      "date": "2026-09-16",
+      "request": "按智见 DSH 平台的数据适配模型与 agent 专家技能（用户指定：先只做数据源适配）",
+      "findings": {
+        "platform": "智见 DSH = 云桌面 + Agent 控制台 + 专家库（插件 @zhijian/dsh-expert-library）；非 shell CLI",
+        "existingRealEstatePacks": [
+          "zhijian-realestate (builtin, 33 专家/8 场景/6 methodPacks/10 skillPackages)",
+          "zhijian-residential-advisory (workspace, 7 专家/3 场景/3 团队模板)"
+        ],
+        "datasources": {
+          "zyt": "政研通（智见自有数据服务）https://dss.ke.com；REST + 登录换 token（邮箱+密码）；租户「杭州市住建研究试点」，dataView=internal；已注册可达",
+          "beike": "贝壳布丁 MCP 3.4.7 https://building.ke.com/mcp；MCP over HTTP（JSON-RPC+SSE）；tools/list 需 Authorization 头（已实测）；已注册可达",
+          "wind": "未注册：cliPath 指向的 cli.mjs 不存在"
+        },
+        "packSchemaGap": "平台标准包比我方多 8 类内容：team-templates/ method-packs/ knowledge-providers/ routing/ domain-knowledge/ provider-envelope.schema.json skill-catalog.json structured-snapshot-fields.md + generated/build-manifest.json、validation/validation-report.json（后两者由白名单脚本 build-packs.mjs 生成）"
+      },
+      "delivered": [
+        "adapters/platform_bridge.py：beike MCP over HTTP 客户端（SSE 解析）+ zyt REST 客户端（登录换 token）+ 两个 SourceAdapter 封装",
+        "adapters/PLATFORM-SOURCES.md：实测档案（每条含验证方式与「尚未确认」清单）",
+        "data-contracts/capability-contract.csv：改为平台真实数据源（zyt/beike/wind），auth 与 notes 指向真实端点",
+        "adapters/registry.py：接入平台源，按构造签名判定是否需要文件路径",
+        "tests/test_regression.py：新增 TestPlatformBridge（7 项）保护「无凭证不伪造数据」纪律"
+      ],
+      "discipline": "凭证只从环境变量读取（BEIKE_MCP_API_KEY / ZYT_TOKEN 或 ZYT_EMAIL+ZYT_PASSWORD），绝不硬编码、绝不入库；无凭证时原样上报上游错误，不返回空壳、不静默降级；未确认的端点不猜路径",
+      "notDone": [
+        "beike Authorization 头确切形式（Bearer 还是裸 key）——待凭证验证",
+        "beike 工具清单、zyt 数据接口清单——待凭证后 --discover 枚举",
+        "平台包 schema 对齐（8 类缺失目录）与 build-packs.mjs 重建——用户指定暂缓",
+        "专家模型路由（当前全部 deepseek-official / deepseek-v4-flash / max）——未调整"
+      ]
     }
   }
 }

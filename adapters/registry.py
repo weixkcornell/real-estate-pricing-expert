@@ -34,6 +34,7 @@ from core import read_csv  # noqa: E402
 from index70 import Index70CityAdapter  # noqa: E402
 from local_csv import (LandParcelAdapter, ListingAdapter, RentAdapter,  # noqa: E402
                        WangqianAdapter)
+from platform_bridge import BeikeMcpAdapter, ZytRestAdapter  # noqa: E402
 
 CONTRACT = os.path.join(_ROOT, "data-contracts", "capability-contract.csv")
 FIXTURES = os.path.join(_HERE, "fixtures")
@@ -83,24 +84,27 @@ LOCAL = {
     "rep.rent.monthly.read": RentAdapter,
     "rep.land.parcel.read": LandParcelAdapter,
     "rep.stats.70city.read": Index70CityAdapter,
+    # 平台真实数据源（智见 DSH）——凭证从环境解析，缺失时如实报 needs_key
+    "platform.beike.mcp": BeikeMcpAdapter,
+    "platform.zyt.rest": ZytRestAdapter,
 }
 
 REMOTE = {
     "rep.flow.wangqian.read": RemoteFetch(
         "rep.flow.wangqian.read",
-        "网签备案数据需住建/平台密钥授权，本包不持有密钥",
+        "网签备案数据经平台源 zyt（政研通 dss.ke.com）获取，需平台侧凭证；本包不持有密钥",
         WangqianAdapter),
     "rep.listing.price.read": RemoteFetch(
         "rep.listing.price.read",
-        "中介平台数据需平台密钥授权，本包不持有密钥",
+        "挂牌数据经平台源 beike（贝壳 MCP building.ke.com/mcp）获取，需平台侧凭证；本包不持有密钥",
         ListingAdapter),
     "rep.rent.monthly.read": RemoteFetch(
         "rep.rent.monthly.read",
-        "租赁平台数据需平台密钥授权，本包不持有密钥",
+        "租金数据经平台源 zyt（政研通）获取，需平台侧凭证；本包不持有密钥",
         RentAdapter),
     "rep.land.parcel.read": RemoteFetch(
         "rep.land.parcel.read",
-        "土地出让数据需平台密钥授权，本包不持有密钥",
+        "土地出让数据经平台源 zyt（政研通）获取，需平台侧凭证；本包不持有密钥",
         LandParcelAdapter),
     "rep.stats.70city.read": RemoteFetch(
         "rep.stats.70city.read",
@@ -147,13 +151,34 @@ def probe_all():
         local = LOCAL.get(cap)
         remote = REMOTE.get(cap)
         if local:
-            gen = local(os.path.join(FIXTURES, _fixture_name(local)))
+            # ⚠️ 适配器构造签名分两类：文件类需要 path，平台类无参（凭证由环境解析）。
+            # 不能用 `issubclass(CsvFileAdapter)` 判断——Index70CityAdapter 也吃 path，
+            # 但它是直接继承 SourceAdapter 的。因此**按构造签名判定**。
+            needs_path = _needs_path_arg(local)
+            gen = local(os.path.join(FIXTURES, _fixture_name(local))) if needs_path else local()
             ok, why = gen.probe()
-            out.append((cap, Status.PARTIAL, ok, "本地 CSV 路径：" + why))
+            tag = "本地数据文件：" if needs_path else "平台数据源："
+            out.append((cap, gen.status, ok, tag + why))
         if remote:
             ok2, why2 = remote.probe()
             out.append((cap, Status.NEEDS_KEY, ok2, "自动取数：" + why2))
     return out
+
+
+def _needs_path_arg(adapter_cls):
+    """该适配器的构造是否需要位置参数（即是否需要传入数据文件路径）。"""
+    import inspect
+    try:
+        sig = inspect.signature(adapter_cls.__init__)
+    except (TypeError, ValueError):
+        return True
+    for p in sig.parameters.values():
+        if p.name == "self":
+            continue
+        if p.kind in (inspect.Parameter.POSITIONAL_ONLY,
+                      inspect.Parameter.POSITIONAL_OR_KEYWORD) and p.default is inspect.Parameter.empty:
+            return True
+    return False
 
 
 def _fixture_name(adapter_cls):

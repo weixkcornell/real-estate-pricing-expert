@@ -88,7 +88,7 @@ real-estate-pricing-expert/
 
 | 模块 | 用途 |
 |---|---|
-| `adapters/` | **数据契约的可运行实现**：网签 / 挂牌 / 租金 / 70城指数 / 土地 五个适配器（含中文表头别名解析、口径标注、数据体检）；`registry.py` 给出契约实现对照与可用性探测 |
+| `adapters/` | **数据契约的可运行实现**：网签 / 挂牌 / 租金 / 70城指数 / 土地 五个本地适配器（含中文表头别名解析、口径标注、数据体检）＋**智见平台数据源桥接**（`platform_bridge.py`：zyt 政研通 REST、beike 布丁 MCP over HTTP）；`registry.py` 给出契约实现对照与可用性探测。平台源实测档案见 `adapters/PLATFORM-SOURCES.md` |
 | `scripts/uncertainty.py` | **统一不确定性出口**：split / normalized conformal、CV+，为 RF/GBM 等无原生区间的模型补区间，并合成口径折算不确定性 |
 | `source/check_manifest.py` | 溯源一致性校验（防幽灵引用） |
 | `quality-policies/gate_runner.py` | 可执行质量门禁（不可自动化的降级为声明性要求） |

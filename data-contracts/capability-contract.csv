@@ -1,6 +1,9 @@
 capability,method,input_schema,output_schema,caliber,unit,frequency,lag,dataView,auth,rate_limit,sla,notes
-rep.flow.wangqian.read,read,{city:string;period:string;district:string},{series:number[];dates:string[]},住建部门商品房/存量房网签备案成交口径,元/㎡,月更,T+7,external,平台密钥库,10 QPS,工作日 99%,成交口径；作为估值主源
-rep.listing.price.read,read,{city:string;district:string;community:string},{series:number[];dates:string[]},房地产中介平台二手房挂牌报价口径,元/㎡,日更,T+1,external,平台密钥库,20 QPS,95%,报价口径；须折算出成交口径后使用
-rep.rent.monthly.read,read,{city:string;district:string;layout:string},{series:number[];dates:string[]},住房租赁市场月度租金挂牌/成交口径,元/月,月更,T+3,external,平台密钥库,10 QPS,95%,租金口径；与售价口径不同，不得混用
-rep.stats.70city.read,read,{city:string;indicator:string},{series:number[];dates:string[]},国家统计局70个大中城市住宅销售价格指数口径,指数（定基=100）,月更,T+15,external,公开,5 QPS,工作日 99%,指数口径；首值=100，禁当绝对量
-rep.land.parcel.read,read,{city:string;district:string},{series:number[];dates:string[]},土地出让成交口径,元/㎡（楼面价）,季更,T+30,external,平台密钥库,5 QPS,90%,土地口径；用于成本法与供给分析
+rep.flow.wangqian.read,read,{city:string;period:string;district:string},{series:number[];dates:string[]},住建部门商品房/存量房网签备案成交口径,元/㎡,月更,T+7,internal,zyt 登录换 token（邮箱+密码）,待确认,待确认,首选源=政研通 zyt（https://dss.ke.com，租户「杭州市住建研究试点」）；接口清单待登录后确认
+rep.rent.monthly.read,read,{city:string;period:string;layout:string},{series:number[];dates:string[]},住房租赁市场月度租金口径,元/月,月更,T+3,internal,zyt 登录换 token（邮箱+密码）,待确认,待确认,首选源=政研通 zyt；与售价口径不同不得混用
+rep.land.parcel.read,read,{city:string;period:string;district:string},{series:number[];dates:string[]},土地出让成交口径,元/㎡（楼面价）,季更,T+30,internal,zyt 登录换 token（邮箱+密码）,待确认,待确认,首选源=政研通 zyt；用于成本法与假设开发法
+rep.listing.price.read,read,{city:string;district:string;community:string},{series:number[];dates:string[]},贝壳（布丁MCP）房产挂牌报价口径,元/㎡,日更,T+1,internal,beike MCP Authorization 头（平台侧 .beike/BEIKE_MCP_API_KEY）,待确认,待确认,首选源=贝壳 MCP（https://building.ke.com/mcp，布丁MCP服务 3.4.7）；tools/list 已验证需鉴权
+rep.stats.70city.read,read,{city:string;indicator:string},{series:number[];dates:string[]},国家统计局70个大中城市住宅销售价格指数口径,指数（定基=100）,月更,T+15,public,无需鉴权（导出 CSV 后本地解析）,5 QPS,工作日 99%,本包已实现 Index70CityAdapter（零依赖本地解析）；未内置抓取器以避免依赖网络与反爬波动
+platform.beike.mcp,tools,—,—,贝壳（布丁MCP）房产结构化数据口径,随工具而定,实时,T+0,internal,beike MCP Authorization 头（平台侧 .beike/BEIKE_MCP_API_KEY）,待确认,待确认,平台源：https://building.ke.com/mcp（布丁MCP服务 3.4.7）；ping 免鉴权已实测，tools/list 需鉴权已实测
+platform.zyt.rest,get,—,—,政研通（智见数据服务）数据口径 · dataView=internal · 租户「杭州市住建研究试点」,随接口而定,待确认,待确认,internal,zyt 登录换 token（邮箱+密码）,待确认,待确认,平台源：https://dss.ke.com；/api/auth/login 接受 email 已实测，数据接口清单待登录后确认
+#platform.wind.cli,read,—,—,Wind 金融终端口径,—,—,—,—,CLI（本地受控命令）,待确认,待确认,平台侧未注册：cliPath 指向 .agents/skills/wind-mcp-skill/scripts/cli.mjs 但文件不存在

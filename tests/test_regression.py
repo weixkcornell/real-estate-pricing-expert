@@ -592,3 +592,72 @@ class TestManifestConsistency(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+# ================================================================ E. 平台数据源桥接
+class TestPlatformBridge(unittest.TestCase):
+    """
+    桥接层的**诚实行为**回归。
+
+    这是本包最该被测试保护的一条纪律：**无凭证时不返回空壳、不编造数据、
+    而是原样上报上游错误**。一个返回空壳的 fetch() 会让下游把降级结论当完整结论交付。
+    """
+
+    def test_sse_parsing_real_sample(self):
+        """MCP over HTTP 的响应是 SSE；必须能解析出实测样本里的 JSON-RPC 帧。"""
+        from platform_bridge import parse_sse
+        sample = ('event: message\ndata: {"jsonrpc":"2.0","id":1,"error":'
+                  '{"code":0,"message":"Invalid or missing Authorization header"}}\n\n')
+        frames = parse_sse(sample)
+        self.assertEqual(len(frames), 1)
+        self.assertEqual(frames[0]["error"]["code"], 0)
+        self.assertIn("Authorization", frames[0]["error"]["message"])
+
+    def test_plain_json_fallback(self):
+        from platform_bridge import parse_sse
+        self.assertEqual(parse_sse('{"jsonrpc":"2.0","id":2,"result":{}}')[0]["result"], {})
+
+    def test_auth_error_classified_as_needs_key(self):
+        from platform_bridge import classify_mcp_error
+        info = classify_mcp_error({"error": {"code": 0,
+                                            "message": "Invalid or missing Authorization header"}})
+        self.assertEqual(info["kind"], "needs_key")
+        self.assertIn("Authorization", info["upstreamMessage"])
+
+    def test_protocol_error_not_misclassified_as_missing_key(self):
+        """-32602 是协议参数问题，不得被误判为缺凭证——否则会误导使用者去配密钥。"""
+        from platform_bridge import classify_mcp_error
+        info = classify_mcp_error({"error": {"code": -32602, "message": "Invalid request parameters"}})
+        self.assertEqual(info["kind"], "protocol_params")
+
+    def test_no_credential_returns_no_fabricated_rows(self):
+        """
+        无凭证时 fetch 必须**不返回伪造数据**：rows 为空，且 gaps/warnings 说明原因。
+        """
+        from platform_bridge import BeikeMcpAdapter
+        a = BeikeMcpAdapter(api_key="")
+        a.api_key = None
+        res = a.fetch()
+        self.assertEqual(res.rows, [], "无凭证时不得返回任何 rows（防伪造）")
+        self.assertTrue(res.warnings or res.gaps, "必须说明为何取不到数据")
+
+    def test_credential_only_from_environment(self):
+        """
+        凭证只从环境变量读取——回归「绝不硬编码密钥」。
+        """
+        import os
+        from platform_bridge import BEIKE_DEFAULT_URL, resolve_beike_key
+        key, src = resolve_beike_key()
+        if key:
+            self.assertIn("环境变量", src if "环境变量" in src else src)
+        # 端点必须是实测确认的地址，不得是占位符
+        self.assertEqual(BEIKE_DEFAULT_URL, "https://building.ke.com/mcp")
+
+    def test_zyt_login_uses_email_field(self):
+        """zyt 登录字段是 **email**（实测：传 username 会被拒），不得写错字段名。"""
+        from platform_bridge import ZYT_LOGIN_PATH
+        self.assertEqual(ZYT_LOGIN_PATH, "/api/auth/login")
+        import inspect
+        from platform_bridge import ZytClient
+        src = inspect.getsource(ZytClient.login)
+        self.assertIn('"email"', src)
+        self.assertNotIn('"username"', src)
