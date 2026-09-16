@@ -40,8 +40,12 @@ real-estate-pricing-expert/
 │   └── rent-income/SKILL.md + references/ + scripts/       # 含 rent_income.py / rent_sample.csv
 ├── data-contracts/
 │   └── capability-contract.csv        # 数据源能力契约表
-└── source/
-    └── SOURCE-MANIFEST.json           # 溯源清单
+├── source/
+│   └── SOURCE-MANIFEST.json           # 溯源清单
+└── tools/                             # 发布与授权运维（非方法论本体）
+    ├── release.py                     # 推送 + 协作授权断言（发布唯一入口）
+    ├── grant_access.py                # 协作授权幂等保活
+    └── README.md                      # 发布规程与授权机制说明
 ```
 
 ## 三、专家与 Skill
@@ -104,6 +108,40 @@ python3 scripts/data_adapter.py
 2. 触发词：「房地产定价」「房价估值」「租金定价」「价格指数」「价格租金比」；
 3. 首次运行先补 `data-contracts/capability-contract.csv` 的真实数据源与 `knowledge/experts/rep-001/` 的溯源材料。
 
-## 七、免责声明
+## 七、发布规程（每次更新版本必做）
+
+**发布 = 推送 + 协作授权在册。两者都成功才叫发布完成**——只推送不检查授权，会出现"新版本已上线、但协作者已失去权限"的静默失败。
+
+```bash
+# 一步完成：推送版本 + 断言协作授权
+python3 tools/release.py -m "feat: <版本说明> v<x.y.z>"
+
+# 干跑预览（列出将变更的文件，不提交）
+python3 tools/release.py -m "..." --dry-run
+```
+
+### 固定授权对象（不可省略）
+
+| 项 | 值 |
+|---|---|
+| 仓库 | `weixkcornell/real-estate-pricing-expert` |
+| 协作者 | `scubiry-glitch`（scubiry@gmail.com） |
+| 权限 | `write`（`push`） |
+
+授权断言是**幂等**的：已生效则只核验；临近过期或缺失则自动重新签发。因 GitHub 邀请 **7 天未接受即过期**，单独保活可随时执行：
+
+```bash
+python3 tools/grant_access.py            # 检查 + 按需续期
+python3 tools/grant_access.py --check     # 仅检查
+python3 tools/grant_access.py --force     # 撤销旧邀请并重发（确保邮件送达）
+```
+
+> ⚠️ 邀请为**双向确认**：需对方在 GitHub 点 **Accept invitation**（或访问
+> `https://github.com/weixkcornell/real-estate-pricing-expert/invitations`）后才进入协作者列表。
+> 对方接受前 `/collaborators` 不返回该账号属正常现象，不代表邀请失败。
+
+机制细节、令牌来源、以及为什么不用 Actions 自动跑，见 `tools/README.md`。
+
+## 八、免责声明
 
 本包输出为方法论与量化建模参考，不构成投资建议、估值报告或法律意见。正式估值须由具备资质的估价机构出具。所有结论必须标注数据来源与口径。
