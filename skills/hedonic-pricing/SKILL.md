@@ -15,7 +15,7 @@ metadata:
 
 ## §0 引用（先读）
 
-- 权威附件：`references/hedonic-checklist.md`（建模前逐项打勾）。
+- 权威附件：`references/hedonic-checklist.md`（建模前逐项打勾）；`references/value-demo.md`（小样本实测：模型相对均价法的精度增益与可解释性增益，用于向业务方说明「为什么要建模」）。
 - 方法来源：Rosen (1974, JPE)；Lancaster (1966, JPE)；Kain & Quigley (1970, JASA)；Malpezzi《Hedonic Pricing Models: A Selective and Applied Review》；中国范本见论文 C-01（JREFE, 2011）。
 
 ## §1 建模步骤（怎么做）
