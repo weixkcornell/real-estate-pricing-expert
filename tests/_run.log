@@ -1,0 +1,315 @@
+test_chinese_headers_and_string_fields_preserved (tests.test_adapters.TestListingAdapter.test_chinese_headers_and_string_fields_preserved) ... ok
+test_chinese_headers_and_string_fields_preserved (tests.test_adapters.TestRentAdapter.test_chinese_headers_and_string_fields_preserved) ... ok
+test_chinese_headers_and_string_fields_preserved (tests.test_adapters.TestWangqianAdapter.test_chinese_headers_and_string_fields_preserved) ... ok
+test_sizes (tests.test_benchmark.TestBenchmarkIntegrity.test_sizes) ... ok
+test_attribute_coef_recovery (tests.test_benchmark.TestBenchmarkOlsRecovery.test_attribute_coef_recovery) ... ERROR
+test_heteroscedasticity_present (tests.test_benchmark.TestBenchmarkSpatialAndHetero.test_heteroscedasticity_present)
+基准应存在异方差：大面积组残差方差应明显大于小组。 ... ok
+test_morans_i_significant (tests.test_benchmark.TestBenchmarkSpatialAndHetero.test_morans_i_significant)
+基准应存在空间自相关（Moran's I 显著），否则空间模型无检验对象。 ... FAIL
+test_coverage_reasonable (tests.test_ml.TestGaussianProcessAVM.test_coverage_reasonable)
+95% 预测区间覆盖率应在合理区间（明显 > 0%，通常接近名义水平）。 ... ok
+test_interval_width_comparable_to_y_scale (tests.test_ml.TestGaussianProcessAVM.test_interval_width_comparable_to_y_scale)
+区间宽度中位数应远大于个位数（与单价 3 万元量级相称，而非 1 元/㎡）。 ... ok
+test_chain_mom_basic (tests.test_numeric_core.TestChainMom.test_chain_mom_basic)
+环比 [0, 1.0, 2.0]%（百分点）→ 定基 [100, 101, 103.02]。 ... ok
+test_chain_mom_negative (tests.test_numeric_core.TestChainMom.test_chain_mom_negative)
+环比含负增长：链式乘法正确处理下跌。 ... ok
+test_chain_mom_none_passthrough (tests.test_numeric_core.TestChainMom.test_chain_mom_none_passthrough)
+缺失（None）环比应保持为 None，不臆造数据。 ... FAIL
+test_det_2x2_analytic (tests.test_numeric_core.TestDet.test_det_2x2_analytic) ... ok
+test_det_matches_reference (tests.test_numeric_core.TestDet.test_det_matches_reference)
+det() 应与独立的代数余子式展开一致（随机矩阵）。 ... ok
+test_det_singular_zero (tests.test_numeric_core.TestDet.test_det_singular_zero)
+奇异矩阵行列式应为 0（或近似 0）。 ... ok
+test_det_transpose_invariant (tests.test_numeric_core.TestDet.test_det_transpose_invariant) ... ok
+test_inverse_random_pd (tests.test_numeric_core.TestInverse.test_inverse_random_pd)
+随机正定矩阵：A·A⁻¹ 应等于单位阵（容差 1e-8）。 ... ok
+test_inverse_singular_raises (tests.test_numeric_core.TestInverse.test_inverse_singular_raises)
+奇异矩阵必须显式报错，而非静默返回错值（数值稳定性的硬纪律）。 ... ok
+test_ols_known_dgp (tests.test_numeric_core.TestOls.test_ols_known_dgp)
+已知 DGP y = 1 + 2·x1 − 3·x2：系数应精确还原（无噪声）。 ... ok
+test_ols_noisy_recovery (tests.test_numeric_core.TestOls.test_ols_noisy_recovery)
+含噪声的已知 DGP：系数应在容差内还原（大样本）。 ... ok
+test_bmn_recovers_true_index (tests.test_price_index.TestBenchmarkIndexRecovery.test_bmn_recovers_true_index) ... ERROR
+test_cs_recovers_true_index (tests.test_price_index.TestBenchmarkIndexRecovery.test_cs_recovers_true_index) ... ERROR
+test_no_exception_and_sigma_v_positive (tests.test_price_index.TestCaseShillerTwoGap.test_no_exception_and_sigma_v_positive) ... ERROR
+test_recovers_known_yields (tests.test_regression.TestCapRateCalibrator.test_recovers_known_yields)
+cap rate 标定器应还原合成数据中写死的各段真实收益率。 ... ok
+test_amplitude_guard (tests.test_regression.TestComparisonPricing.test_amplitude_guard) ... ok
+test_area_adjustment_not_accumulated (tests.test_regression.TestComparisonPricing.test_area_adjustment_not_accumulated)
+面积调整必须**逐案例独立计算**。 ... ok
+test_exclusion_rules (tests.test_regression.TestComparisonPricing.test_exclusion_rules) ... ok
+test_only_difference_adjusted (tests.test_regression.TestComparisonPricing.test_only_difference_adjusted)
+只调差异不调水平：与估价对象**同朝向**的案例，朝向项必须落在"零调整"里； ... ok
+test_refuses_when_too_few_cases (tests.test_regression.TestComparisonPricing.test_refuses_when_too_few_cases) ... ok
+test_coverage_near_nominal (tests.test_regression.TestConformal.test_coverage_near_nominal) ... ok
+test_interval_composition_widens (tests.test_regression.TestConformal.test_interval_composition_widens) ... ok
+test_lvt_progressive (tests.test_regression.TestCostResidual.test_lvt_progressive) ... ok
+test_residual_analytic_closure (tests.test_regression.TestCostResidual.test_residual_analytic_closure)
+假设开发法解析解必须精确闭合：各项合计 == 开发完成后价值。 ... ok
+test_recovers_true_index (tests.test_regression.TestDefect1CaseShillerCollinearity.test_recovers_true_index)
+BMN 与 Case-Shiller 的指数都应接近 exp(γ_t − γ_base)·100。 ... ok
+test_two_gap_values_do_not_degrade (tests.test_regression.TestDefect1CaseShillerCollinearity.test_two_gap_values_do_not_degrade) ... ok
+test_variance_structure_estimated (tests.test_regression.TestDefect1CaseShillerCollinearity.test_variance_structure_estimated)
+全样本上 σ_u / σ_v 应与真值同量级（真值 0.05 / 0.06）。 ... ok
+test_sar_estimates_rho_in_stationary_domain (tests.test_regression.TestDefect2SEMDimensionMismatch.test_sar_estimates_rho_in_stationary_domain) ... ok
+test_sem_runs_and_estimates (tests.test_regression.TestDefect2SEMDimensionMismatch.test_sem_runs_and_estimates) ... ok
+test_loo_metrics_are_out_of_sample (tests.test_regression.TestDefect3KrigingFakePrecision.test_loo_metrics_are_out_of_sample) ... ok
+test_coverage_reasonable (tests.test_regression.TestDefect4GPUnitMismatch.test_coverage_reasonable) ... ok
+test_interval_width_commensurate_with_target_scale (tests.test_regression.TestDefect4GPUnitMismatch.test_interval_width_commensurate_with_target_scale) ... ok
+test_dual_caliber_returned (tests.test_regression.TestDefect5RentIndexJacobian.test_dual_caliber_returned) ... ok
+test_hedonic_rent_recovers_area_effect (tests.test_regression.TestDefect5RentIndexJacobian.test_hedonic_rent_recovers_area_effect)
+租金 hedonic 的面积系数真值 +0.0100（半对数）。 ... ok
+test_semilog_index_recovers_truth (tests.test_regression.TestDefect5RentIndexJacobian.test_semilog_index_recovers_truth) ... ok
+test_chinese_header_alias_resolution (tests.test_regression.TestDefect6AdapterStringFields.test_chinese_header_alias_resolution) ... ok
+test_missing_required_column_refused (tests.test_regression.TestDefect6AdapterStringFields.test_missing_required_column_refused) ... ok
+test_string_fields_survive_numeric_coercion (tests.test_regression.TestDefect6AdapterStringFields.test_string_fields_survive_numeric_coercion) ... ok
+test_declarative_not_fake_pass (tests.test_regression.TestGateRunner.test_declarative_not_fake_pass)
+不可自动化的门禁必须标为 declarative，**不得返回 pass**（伪造通过比不检查更危险）。 ... d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\quality-policies\gate_runner.py:168: ResourceWarning: unclosed file <_io.TextIOWrapper name='d:\\wb_db\\2026-09-16-13-41-00\\_pack_build\\real-estate-pricing-expert\\quality-policies\\rep-valuation-quality.json' mode='r' encoding='utf-8'>
+  return json.load(open(POLICY, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_no_false_conflict_on_trial_report (tests.test_regression.TestGateRunner.test_no_false_conflict_on_trial_report)
+门禁的数字一致性不得因格式/舍入产生伪冲突。 ... d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\quality-policies\gate_runner.py:492: ResourceWarning: unclosed file <_io.TextIOWrapper name='d:\\wb_db\\2026-09-16-13-41-00\\_pack_build\\trial_run\\北京远洋山水南区-定价报告-v2含方法论.md' mode='r' encoding='utf-8'>
+  report = open(report_path, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\quality-policies\gate_runner.py:187: ResourceWarning: unclosed file <_io.TextIOWrapper name='d:\\wb_db\\2026-09-16-13-41-00\\_pack_build\\trial_run\\数据底座表.csv' mode='r' encoding='utf-8-sig'>
+  raw = open(path, encoding="utf-8-sig").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\quality-policies\gate_runner.py:174: ResourceWarning: unclosed file <_io.TextIOWrapper name='d:\\wb_db\\2026-09-16-13-41-00\\_pack_build\\real-estate-pricing-expert\\output-templates\\rep-valuation.json' mode='r' encoding='utf-8'>
+  t = json.load(open(TEMPLATE, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_range_separator_not_parsed_as_minus (tests.test_regression.TestGateRunner.test_range_separator_not_parsed_as_minus)
+区间连字符必须被当作分隔符：'1.50-1.58' 不得解析出 −1.58。 ... ok
+test_rounding_tolerance (tests.test_regression.TestGateRunner.test_rounding_tolerance)
+四舍五入位差不得被判为冲突（底座 1.68 vs 报告「约 1.7%」）。 ... ok
+test_knowledge_blocks_cover_all_papers (tests.test_regression.TestManifestConsistency.test_knowledge_blocks_cover_all_papers)
+每条 evidenceRefs 指向的知识块必须真实存在，且覆盖清单中的核心文献。 ... d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\tests\test_regression.py:586: ResourceWarning: unclosed file <_io.TextIOWrapper name='d:\\wb_db\\2026-09-16-13-41-00\\_pack_build\\real-estate-pricing-expert\\knowledge\\experts\\rep-001\\blocks/01-hedonic.md' mode='r' encoding='utf-8'>
+  body = open(fp, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\tests\test_regression.py:586: ResourceWarning: unclosed file <_io.TextIOWrapper name='d:\\wb_db\\2026-09-16-13-41-00\\_pack_build\\real-estate-pricing-expert\\knowledge\\experts\\rep-001\\blocks/02-price-index.md' mode='r' encoding='utf-8'>
+  body = open(fp, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\tests\test_regression.py:586: ResourceWarning: unclosed file <_io.TextIOWrapper name='d:\\wb_db\\2026-09-16-13-41-00\\_pack_build\\real-estate-pricing-expert\\knowledge\\experts\\rep-001\\blocks/03-spatial.md' mode='r' encoding='utf-8'>
+  body = open(fp, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\tests\test_regression.py:586: ResourceWarning: unclosed file <_io.TextIOWrapper name='d:\\wb_db\\2026-09-16-13-41-00\\_pack_build\\real-estate-pricing-expert\\knowledge\\experts\\rep-001\\blocks/04-machine-learning.md' mode='r' encoding='utf-8'>
+  body = open(fp, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\tests\test_regression.py:586: ResourceWarning: unclosed file <_io.TextIOWrapper name='d:\\wb_db\\2026-09-16-13-41-00\\_pack_build\\real-estate-pricing-expert\\knowledge\\experts\\rep-001\\blocks/05-rent-income.md' mode='r' encoding='utf-8'>
+  body = open(fp, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\tests\test_regression.py:586: ResourceWarning: unclosed file <_io.TextIOWrapper name='d:\\wb_db\\2026-09-16-13-41-00\\_pack_build\\real-estate-pricing-expert\\knowledge\\experts\\rep-001\\blocks/06-china-institution.md' mode='r' encoding='utf-8'>
+  body = open(fp, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\tests\test_regression.py:586: ResourceWarning: unclosed file <_io.TextIOWrapper name='d:\\wb_db\\2026-09-16-13-41-00\\_pack_build\\real-estate-pricing-expert\\knowledge\\experts\\rep-001\\blocks/07-practice-methods.md' mode='r' encoding='utf-8'>
+  body = open(fp, encoding="utf-8", errors="replace").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_no_ghost_citations (tests.test_regression.TestManifestConsistency.test_no_ghost_citations)
+溯源一致性：包内不得引用未登记的文献标签。 ... ok
+test_scenario_dag_acyclic_and_resolvable (tests.test_regression.TestManifestConsistency.test_scenario_dag_acyclic_and_resolvable) ... ok
+test_chain_mom_rebase (tests.test_regression.TestNumericalCore.test_chain_mom_rebase) ... ok
+test_det_matches_analytic (tests.test_regression.TestNumericalCore.test_det_matches_analytic) ... ok
+test_inverse_identity (tests.test_regression.TestNumericalCore.test_inverse_identity) ... ok
+test_ols_recovers_known_dgp (tests.test_regression.TestNumericalCore.test_ols_recovers_known_dgp)
+在已知系数的合成数据上还原系数。 ... ok
+test_wls_equals_ols_with_equal_weights (tests.test_regression.TestNumericalCore.test_wls_equals_ols_with_equal_weights) ... ok
+test_both_calibers_present (tests.test_rent.TestStratifiedRentIndex.test_both_calibers_present)
+返回结构必须同时含主口径（半对数）与诊断口径（选中 λ）。 ... ok
+test_semilog_caliber_recovers_truth (tests.test_rent.TestStratifiedRentIndex.test_semilog_caliber_recovers_truth)
+半对数主口径应还原已知真值租金指数（容差内）。 ... ERROR
+test_loo_mae_positive_not_fake (tests.test_spatial.TestRegressionKriging.test_loo_mae_positive_not_fake) ... ok
+test_returns_loo_metrics (tests.test_spatial.TestRegressionKriging.test_returns_loo_metrics) ... ok
+test_sar_runs (tests.test_spatial.TestSARSmoke.test_sar_runs) ... ok
+test_sem_coef_same_magnitude_as_ols (tests.test_spatial.TestSEM.test_sem_coef_same_magnitude_as_ols) ... ok
+test_sem_runs_and_lambda_estimable (tests.test_spatial.TestSEM.test_sem_runs_and_lambda_estimable) ... ok
+
+======================================================================
+ERROR: test_attribute_coef_recovery (tests.test_benchmark.TestBenchmarkOlsRecovery.test_attribute_coef_recovery)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\tests\test_benchmark.py", line 65, in test_attribute_coef_recovery
+    row.append(float(r[c]))
+                     ~^^^
+KeyError: '面积'
+
+======================================================================
+ERROR: test_bmn_recovers_true_index (tests.test_price_index.TestBenchmarkIndexRecovery.test_bmn_recovers_true_index)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\tests\test_price_index.py", line 100, in test_bmn_recovers_true_index
+    true = self.truth[t]
+           ~~~~~~~~~~^^^
+KeyError: '1'
+
+======================================================================
+ERROR: test_cs_recovers_true_index (tests.test_price_index.TestBenchmarkIndexRecovery.test_cs_recovers_true_index)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\tests\test_price_index.py", line 109, in test_cs_recovers_true_index
+    true = self.truth[t]
+           ~~~~~~~~~~^^^
+KeyError: '1'
+
+======================================================================
+ERROR: test_no_exception_and_sigma_v_positive (tests.test_price_index.TestCaseShillerTwoGap.test_no_exception_and_sigma_v_positive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\tests\test_price_index.py", line 76, in test_no_exception_and_sigma_v_positive
+    res = case_shiller_index(pairs)
+  File "d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\skills\price-index\scripts\price_index.py", line 146, in case_shiller_index
+    periods = _periods(pairs)
+  File "d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\skills\price-index\scripts\price_index.py", line 71, in _periods
+    ps.add(r["t1"])
+           ~^^^^^^
+KeyError: 't1'
+
+======================================================================
+ERROR: test_semilog_caliber_recovers_truth (tests.test_rent.TestStratifiedRentIndex.test_semilog_caliber_recovers_truth)
+半对数主口径应还原已知真值租金指数（容差内）。
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\tests\test_rent.py", line 61, in test_semilog_caliber_recovers_truth
+    """半对数主口径应还原已知真值租金指数（容差内）。"""
+                     ^^^^
+KeyError: 1
+
+======================================================================
+FAIL: test_morans_i_significant (tests.test_benchmark.TestBenchmarkSpatialAndHetero.test_morans_i_significant)
+基准应存在空间自相关（Moran's I 显著），否则空间模型无检验对象。
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\tests\test_benchmark.py", line 88, in test_morans_i_significant
+    self.assertLess(m["p_value"], 0.05,
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+                    "Moran's I 未检出显著空间自相关（基准缺少空间结构）")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0.98989898989899 not less than 0.05 : Moran's I 未检出显著空间自相关（基准缺少空间结构）
+
+======================================================================
+FAIL: test_chain_mom_none_passthrough (tests.test_numeric_core.TestChainMom.test_chain_mom_none_passthrough)
+缺失（None）环比应保持为 None，不臆造数据。
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "d:\wb_db\2026-09-16-13-41-00\_pack_build\real-estate-pricing-expert\tests\test_numeric_core.py", line 143, in test_chain_mom_none_passthrough
+    self.assertIsNone(idx[2])
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+AssertionError: 103.0 is not None
+
+----------------------------------------------------------------------
+Ran 66 tests in 490.451s
+
+FAILED (failures=2, errors=5)
+{
+  "report": "trial_run/北京远洋山水南区-定价报告-v2含方法论.md",
+  "baseline": "trial_run/数据底座表.csv",
+  "baselineError": null,
+  "policy": "rep-valuation.quality v0.1.0",
+  "gates": [
+    {
+      "id": "placeholder-clean",
+      "severity": "hard",
+      "execution": "automated",
+      "status": "pass",
+      "detail": "未填占位符 0 处",
+      "evidence": []
+    },
+    {
+      "id": "no-banned-tokens",
+      "severity": "hard",
+      "execution": "automated",
+      "status": "pass",
+      "detail": "扫描 4 个禁例 token，命中 0 处",
+      "evidence": []
+    },
+    {
+      "id": "numbers-match-dataset",
+      "severity": "hard",
+      "execution": "automated",
+      "status": "pass",
+      "detail": "可核验数字命中底座 184 处；冲突 0 处；待核 78 处（相对容差 0.50% + 按书写精度放宽）",
+      "evidence": [
+        "待核：第 8 行「15」（单位 条）| 建模样本 | 8 套挂牌（含属性）+ 15 条租金 |",
+        "待核：第 30 行「10,582」（单位 元/㎡）最朴素的定价是「小区均价 × 面积」。它假设所有房子同质，但房地产的核心特征恰恰是**异质**——本次 8 套挂牌样本的单价极差达 **10",
+        "待核：第 54 行「3,504」（单位 —）| 朴素均价法 | 3,504 | **7.06%** | 约 ±35 万 |",
+        "待核：第 55 行「1,100」（单位 —）| 特征价格模型 | 1,100 | **2.24%** | 约 ±11 万 |",
+        "待核：第 56 行「-4.82」（单位 pp）| **改善** | **−68.6%** | **−4.82 pp** | 误差收窄约 24 万 |",
+        "待核：第 62 行「50.45」（单位 ㎡）| 50.45㎡ 东南北 中层 | 44,599 | +4,552 | +192 | ✓ |"
+      ],
+      "counts": {
+        "matched": 184,
+        "conflicts": 0,
+        "unresolved": 78
+      },
+      "tolerance_pct_used": 0.5
+    },
+    {
+      "id": "caliber-declared",
+      "severity": "hard",
+      "execution": "automated",
+      "status": "fail",
+      "detail": "含量值的行 81 行，其中 13 行可归属标注级（16%）；底线 60%；集中式声明覆盖 9 个指标名",
+      "evidence": [
+        "第 8 行未标标注级：| 建模样本 | 8 套挂牌（含属性）+ 15 条租金 |",
+        "第 17 行未标标注级：2. **模型价值实测**：朴素均价法 MAPE **7.06%** → 特征价格模型 MAPE **2.24%**，单套定价误差**下降 68.6%**（第二",
+        "第 19 行未标标注级：4. **趋势警示**：小区挂牌均价同比 **−12.4%**，跌幅**显著大于北京整体**（官方二手指数同比 −4.5% ~ −5.5%）。",
+        "第 30 行未标标注级：最朴素的定价是「小区均价 × 面积」。它假设所有房子同质，但房地产的核心特征恰恰是**异质**——本次 8 套挂牌样本的单价极差达 **10,582 元/㎡（2",
+        "第 35 行未标标注级：| **属性不可比** | 朝向、楼层差异被抹平 | 南北向 +6.80%、高楼层 +9.20% |",
+        "第 36 行未标标注级：| **空间不可比** | 忽略小区/商圈分层 | 小区较商圈溢价 +22.7% |",
+        "第 52 行未标标注级：| 方法 | MAE（元/㎡） | MAPE | 100㎡ 房源的定价误差 |",
+        "第 54 行未标标注级：| 朴素均价法 | 3,504 | **7.06%** | 约 ±35 万 |"
+      ]
+    },
+    {
+      "id": "interval-required",
+      "severity": "hard",
+      "execution": "automated",
+      "status": "pass",
+      "detail": "检测到区间表述：是；疑似单点断言：0 处",
+      "evidence": []
+    },
+    {
+      "id": "outline-match",
+      "severity": "soft",
+      "execution": "automated",
+      "status": "warn",
+      "detail": "模板 10 节，缺失 5 节",
+      "evidence": [
+        "缺失章节：方法层级与降级说明",
+        "缺失章节：方法与模型",
+        "缺失章节：不确定性与区间合成",
+        "缺失章节：政策与制度说明",
+        "缺失章节：附录（数据与口径）"
+      ]
+    },
+    {
+      "id": "render-no-overflow",
+      "severity": "hard",
+      "execution": "declarative",
+      "status": "declarative",
+      "detail": "不可自动执行：需要真实渲染环境（浏览器 / 版式引擎）才能测溢出与对比度 AA（双视口）",
+      "evidence": [
+        "人工检查项：在 1440px 与 375px 两个视口打开成品，检查：无横向溢出、文字对比度达到 WCAG AA（正文 ≥4.5:1）、表格在窄屏可读"
+      ]
+    },
+    {
+      "id": "layout-audit",
+      "severity": "soft",
+      "execution": "declarative",
+      "status": "declarative",
+      "detail": "不可自动执行：排版质量属视觉判断，无客观可执行判据",
+      "evidence": [
+        "人工检查项：检查层级清晰、留白一致、图表与正文对齐、无孤行寡行"
+      ]
+    }
+  ],
+  "qualityScore": 78,
+  "deliverable": false,
+  "hardFailures": [
+    "caliber-declared"
+  ],
+  "maxRepairRounds": 2
+}

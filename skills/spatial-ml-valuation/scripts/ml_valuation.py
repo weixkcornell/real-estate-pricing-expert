@@ -14,13 +14,14 @@
        From Manual Appraisal to Automated Valuation. JPM, 43(5). → AVM 定位为筛选级，不可完全替代人工评估。
 [M-04] Calainho, van de Minne & Francke (2024). JREFE, 68, 624-653.
        → ML 更依赖标定数据；小样本不稳定、可能存在估计偏差，须做偏差-方差权衡。
-[M-05] (2025). Learning the Value of Place: ML Models for Real Estate Appraisal in Istanbul.
-       Buildings, 15(15), 2773. → RF 与 XGBoost 表现最好；须配 SHAP 等归因工具解释。
+[mat-014] Ho, W.K.O. et al. (2021). Predicting property prices with machine learning algorithms.
+         Journal of Property Research. → 树集成在房地产预测上优于线性特征价格；
+         但可解释性下降，须配特征归因工具（本包用排列重要性，未实现 SHAP）。
 
 本模块实现
 ----------
 1. DecisionTreeRegressor   CART 回归树（方差削减准则）
-2. RandomForest            Bagging + 特征随机子抽样（Ho 2021；Istanbul 2025）
+2. RandomForest            Bagging + 特征随机子抽样（mat-024 Breiman 2001；房地产应用 mat-014）
 3. GradientBoostingRegressor  平方损失梯度提升（≈XGBoost 的核心机制）
 4. GaussianProcessAVM      高斯过程空间平滑 AVM，输出预测区间（Irish 2022）
 5. permutation_importance  排列重要性（模型无关归因，SHAP 的可复现替代）
@@ -147,7 +148,7 @@ class DecisionTreeRegressor:
 
 class RandomForest:
     """
-    随机森林（Breiman 2001；房地产应用见 Ho et al. 2021、Istanbul 2025）。
+    随机森林（mat-024 Breiman 2001；房地产应用见 mat-014 Ho et al. 2021）。
 
     Bagging + 每节点特征随机子抽样；预测为各树平均。
     out-of-bag（OOB）样本用于无需独立验证集的泛化估计。
@@ -382,7 +383,8 @@ def _det(A):
 
 def permutation_importance(model_predict, X, y, names, repeats=5, seed=11):
     """
-    排列重要性（模型无关归因；Istanbul 2025 用 SHAP，本函数为其可复现替代）。
+    排列重要性（模型无关归因）。本包**未实现 SHAP**（未计算 Shapley 值），
+    本函数是零依赖条件下可复现的替代方案——报告中不得称其为 SHAP。
 
     思路：打乱某特征后预测误差的增量 = 该特征的重要性。纯标准库可复现，
     不依赖 shap 包；如需严格 Shapley 值请另行安装 shap。

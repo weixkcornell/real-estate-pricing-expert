@@ -1,0 +1,141 @@
+{
+  "pack": "real-estate-pricing-expert",
+  "expert": "rep-001",
+  "version": "0.3.0",
+  "generatedFrom": "source/SOURCE-MANIFEST.json",
+  "usage": "本索引为 rep-001 能力声明的知识锚点（evidenceRefs）。专家引用某能力时，应能顺着 ability → blocks → papers 找到方法原文要点，而不是只有二手概括。",
+  "blocks": [
+    {
+      "id": "kb-hedonic",
+      "file": "blocks/01-hedonic.md",
+      "title": "特征价格族（Hedonic）",
+      "papers": ["mat-001", "mat-002", "mat-003", "mat-007"],
+      "supportsCapabilities": ["rep.hedonic", "rep.attr.decompose"],
+      "code": ["skills/hedonic-pricing/scripts/hedonic_model.py"],
+      "keyTakeaways": [
+        "Rosen 的 ∂P/∂z 是均衡点隐含价格，不等于需求参数（两步法只做完第一步不算完成）",
+        "属性价格可时变（Chen & Harding），中国场景应读作政策冲击度量",
+        "半对数形式为实务首选；函数形式须做 Box-Cox 检验并报告 λ 置信区间"
+      ]
+    },
+    {
+      "id": "kb-price-index",
+      "file": "blocks/02-price-index.md",
+      "title": "价格指数族（重复销售 / 混合 / ML）",
+      "papers": ["mat-004", "mat-005", "mat-006", "mat-009"],
+      "supportsCapabilities": ["rep.priceindex"],
+      "code": ["skills/price-index/scripts/price_index.py"],
+      "keyTakeaways": [
+        "BMN 的 −1/+1 虚拟变量约定使 β_t 直接解释为纯价格变动",
+        "Case-Shiller 三阶段：OLS → 残差平方对间隔回归 → 以拟合标准差倒数为权 WLS",
+        "间隔取值仅 2 个时 g² 与 [1,g] 完全共线，须自适应降阶（本包已修复）",
+        "无重复成交样本时应拒绝出指数，而非降级出不可靠指数"
+      ]
+    },
+    {
+      "id": "kb-spatial",
+      "file": "blocks/03-spatial.md",
+      "title": "空间计量族（SAR / SEM / GWR / 回归克里金）",
+      "papers": ["mat-008", "mat-010", "mat-011", "mat-012", "mat-013"],
+      "supportsCapabilities": ["rep.spatial"],
+      "code": ["skills/spatial-ml-valuation/scripts/spatial_model.py"],
+      "keyTakeaways": [
+        "空间依赖（→SAR/SEM）与空间异质（→GWR/扩展法）是两个必须分开处理的问题",
+        "GWR 带宽 CV 与 AICc 冲突时须并列报告，不可静默择一；n<100 时 GWR 不可用",
+        "SEM 的 (I−λW)X 必须逐列施加变换（本包已修复维度错配缺陷）",
+        "克里金为精确插值器，样本内指标是假精度，必须用 LOO 评测"
+      ]
+    },
+    {
+      "id": "kb-ml",
+      "file": "blocks/04-machine-learning.md",
+      "title": "机器学习估值族（AVM）",
+      "papers": ["mat-014", "mat-015", "mat-016"],
+      "supportsCapabilities": ["rep.ml.valuation", "rep.attr.decompose"],
+      "code": ["skills/spatial-ml-valuation/scripts/ml_valuation.py"],
+      "keyTakeaways": [
+        "ML 精度优势来自非线性与交互，但可解释性下降是落地主要障碍",
+        "GP-AVM 的核心产出是预测区间，须验证覆盖率而非只看点误差",
+        "GP 的 X 与 y 必须同时标准化，否则核幅量纲失配致区间塌缩（本包已修复）",
+        "措辞纪律：本包为自研梯度提升（非 XGBoost）、排列重要性（非 SHAP），不得混称"
+      ]
+    },
+    {
+      "id": "kb-rent-income",
+      "file": "blocks/05-rent-income.md",
+      "title": "租金与收益法族（Cap Rate / DCF / 用户成本）",
+      "papers": ["mat-017", "mat-018", "mat-019", "mat-020"],
+      "supportsCapabilities": ["rep.rent.income", "rep.caprate.calibrate"],
+      "code": ["skills/rent-income/scripts/rent_model.py"],
+      "keyTakeaways": [
+        "cap rate 时变且内含风险溢价，不可用当期值直接外推长期价值",
+        "DCF 须报告折现率×退出 cap rate 二维敏感性，禁用估值反推的 cap rate 再算终值",
+        "用户成本法把高 P/R 归因于低持有成本与预期增值，应反推隐含 π_e 而非直接判泡沫",
+        "Box-Cox 与对数的似然归一化项不一致会使模型选择偏向对数（本包已修复）"
+      ]
+    },
+    {
+      "id": "kb-china-institution",
+      "file": "blocks/06-china-institution.md",
+      "title": "中国制度特异性与政策断点工艺",
+      "papers": ["mat-020", "mat-021", "mat-022", "mat-023"],
+      "supportsCapabilities": ["rep.china.adapt"],
+      "code": [],
+      "keyTakeaways": [
+        "学区/落户/限售/限价/法拍/共有产权属制度性属性，不可作普通连续属性入回归",
+        "政策断点工艺：确定生效日 → 属性×期交互 → 读 γ_jt 跳变 → 配对交叉验证",
+        "断点法估计的是同时性；主张因果须有对照组与平行趋势检验，否则必须免责",
+        "制度参数表（利率/折旧/持有税/π_e/限售/法拍折扣）每项须带来源+口径+截至期"
+      ]
+    },
+    {
+      "id": "kb-practice",
+      "file": "blocks/07-practice-methods.md",
+      "title": "实务工艺（比较法 / 成本法 / 假设开发法）",
+      "papers": [],
+      "standards": ["GB/T 50291 房地产估价规范", "GB/T 18508 城镇土地估价规程", "GB/T 50899 房地产估价基本术语标准"],
+      "supportsCapabilities": ["rep.comparison", "rep.cost.residual"],
+      "code": [
+        "skills/comparison-pricing/scripts/comparison_model.py",
+        "skills/cost-residual/scripts/cost_residual.py"
+      ],
+      "keyTakeaways": [
+        "调整率应锚定 hedonic 属性隐含价格，而非估价师经验数字——这是特征价格模型最被忽视的实务用途",
+        "单项调整一般不超过 ±20%，累计不超过 ±30%；超出应重选案例而非硬调",
+        "调整后须检验案例离散度（CV），过大说明可比性差或调整过度",
+        "成本法不适用于住宅正常交易估值；假设开发法的利润基数循环须用解析解处理",
+        "多法并用时结果并列、超 15% 容差触发差异归因，不做静默择优"
+      ]
+    }
+  ],
+  "paperToBlock": {
+    "mat-001": "kb-hedonic",
+    "mat-002": "kb-hedonic",
+    "mat-003": "kb-hedonic",
+    "mat-004": "kb-price-index",
+    "mat-005": "kb-price-index",
+    "mat-006": "kb-price-index",
+    "mat-007": "kb-hedonic",
+    "mat-008": "kb-spatial",
+    "mat-009": "kb-price-index",
+    "mat-010": "kb-spatial",
+    "mat-011": "kb-spatial",
+    "mat-012": "kb-spatial",
+    "mat-013": "kb-spatial",
+    "mat-014": "kb-ml",
+    "mat-015": "kb-ml",
+    "mat-016": "kb-ml",
+    "mat-017": "kb-rent-income",
+    "mat-018": "kb-rent-income",
+    "mat-019": "kb-rent-income",
+    "mat-020": "kb-rent-income",
+    "mat-021": "kb-china-institution",
+    "mat-022": "kb-china-institution",
+    "mat-023": "kb-china-institution"
+  },
+  "coverage": {
+    "papersTotal": 23,
+    "papersCovered": 23,
+    "note": "23 篇全部落块。mat-020 同时服务于租金指数工艺（kb-rent-income）与中国市场分割（kb-china-institution），以保证不重复也不遗漏。"
+  }
+}

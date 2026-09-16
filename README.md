@@ -9,7 +9,7 @@
 1. 房产价值 = 结构 / 区位 / 邻里 / 周期四类属性的隐含价格之和（Hedonic）；
 2. 价格指数 = 剥离质量变化与样本偏差后的纯价格变动（Repeat-Sales / Hybrid）；
 3. 空间依赖与空间异质必须同时处理（SAR / GWR）；
-4. 大规模估值用机器学习，但必须可解释（SHAP）且带不确定性；
+4. 大规模估值用机器学习，但**必须可解释且带不确定性**——本包的可解释工具为排列重要性与部分依赖（**未实现 SHAP**，见知识块 04 的能力矩阵）；不确定性统一由 conformal 区间出口提供；
 5. 资产价值 = 租金现金流资本化（Cap Rate / DCF / 用户成本），租金与交易定价必须打通。
 
 ## 二、目录结构
@@ -41,11 +41,13 @@ real-estate-pricing-expert/
 ├── data-contracts/
 │   └── capability-contract.csv        # 数据源能力契约表
 ├── source/
-│   └── SOURCE-MANIFEST.json           # 溯源清单
-└── tools/                             # 发布与授权运维（非方法论本体）
-    ├── release.py                     # 推送 + 协作授权断言（发布唯一入口）
-    ├── grant_access.py                # 协作授权幂等保活
-    └── README.md                      # 发布规程与授权机制说明
+│   ├── SOURCE-MANIFEST.json           # 溯源清单（核心文献 + 支撑引用）
+│   └── check_manifest.py              # 溯源一致性校验（防幽灵引用）
+├── adapters/                          # 数据适配器层（契约的可运行实现）
+├── benchmark/                         # 中等规模合成基准（n≈5000，已知 DGP）
+├── tests/                             # 回归测试（含已修复缺陷的防复发用例）
+├── eval/                              # 专家自评套件（带标准答案 + rubric）
+└── quality-policies/                  # 质量门禁定义 + 可执行门禁 runner
 ```
 
 ## 三、专家与 Skill
@@ -57,10 +59,12 @@ real-estate-pricing-expert/
 
 | Skill | 用途 | 方法来源 |
 |---|---|---|
-| `hedonic-pricing` | 特征价格定价与属性分解 | Rosen (1974)、Malpezzi、中国县级 GWR (2011) |
-| `price-index` | 重复销售 / 混合价格指数 | Bailey-Muth-Nourse (1963)、Case-Shiller (1989)、Calainho et al. (2024) |
-| `spatial-ml-valuation` | 空间计量 + 机器学习 AVM | Brunsdon et al. (1996)、Bitter et al. (2007)、Irish AVM (2022) |
-| `rent-income` | 租金定价、Cap Rate、价格租金比 | Ghysels et al. (2007)、Fisher et al. (1994)、Shanghai 租价比 (2021) |
+| `hedonic-pricing` | 特征价格定价与属性分解；**政策断点工艺** | mat-001 Rosen (1974)、mat-003 Malpezzi、mat-007 Chen & Harding (2016)、mat-021 中国空间变异 |
+| `price-index` | 重复销售 / 混合 / ML 价格指数 | mat-004 Bailey-Muth-Nourse (1963)、mat-005 Case & Shiller (1989)、mat-026 Quigley (1995)、mat-009 Calainho et al. (2024) |
+| `spatial-ml-valuation` | 空间计量 + 机器学习 AVM + conformal 区间 | mat-010 Brunsdon et al. (1996)、mat-011 Bitter et al. (2007)、mat-012 Pace & LeSage (2004)、mat-015 爱尔兰 AVM (2022) |
+| `rent-income` | 租金定价、Cap Rate 标定、价格租金比、用户成本 | mat-017 Ghysels et al. (2007)、mat-018 Fisher et al. (1994)、mat-019 上海租价比 (2021)、mat-020 Song et al. (2020) |
+| **`comparison-pricing`** | **比较法（市场法）：可比案例筛选、差异调整、幅度纪律、区间化** | 实务规范 GB/T 50291；调整率锚定 hedonic 隐含价格 |
+| **`cost-residual`** | **成本法与假设开发法（剩余法）：重置价值与土地估值** | 实务规范 GB/T 50291 / GB/T 18508 |
 
 ## 四、场景（DAG）
 
@@ -80,6 +84,18 @@ real-estate-pricing-expert/
 | `skills/spatial-ml-valuation/scripts/ml_valuation.py` | 6 | CART、随机森林、梯度提升、高斯过程 AVM（带区间）、排列重要性、部分依赖 |
 | `skills/rent-income/scripts/rent_model.py` | 6 | hedonic 租金、分层时间虚拟租金指数、匹配价格租金比、用户成本法、Cap Rate、DCF |
 
+### 数据与不确定性基础设施
+
+| 模块 | 用途 |
+|---|---|
+| `adapters/` | **数据契约的可运行实现**：网签 / 挂牌 / 租金 / 70城指数 / 土地 五个适配器（含中文表头别名解析、口径标注、数据体检）；`registry.py` 给出契约实现对照与可用性探测 |
+| `scripts/uncertainty.py` | **统一不确定性出口**：split / normalized conformal、CV+，为 RF/GBM 等无原生区间的模型补区间，并合成口径折算不确定性 |
+| `source/check_manifest.py` | 溯源一致性校验（防幽灵引用） |
+| `quality-policies/gate_runner.py` | 可执行质量门禁（不可自动化的降级为声明性要求） |
+| `benchmark/` | n≈5000 已知 DGP 合成基准（含真值清单） |
+| `tests/` | 回归测试（含已修复缺陷的防复发用例） |
+| `eval/` | 专家自评套件（带标准答案 + rubric） |
+
 **完整方法矩阵（论文 → 方法 → 公式 → 数据 → 代码）见 `scripts/README.md`。**
 
 ```bash
@@ -98,8 +114,28 @@ python3 skills/spatial-ml-valuation/scripts/ml_valuation.py \
 python3 skills/rent-income/scripts/rent_model.py --data skills/rent-income/scripts/rent_panel.csv \
     --rent "月租(元)" --x "面积㎡" --time 期
 
-# 智见数据层自检
-python3 scripts/data_adapter.py
+# 比较法（含案例筛选、幅度与离散度纪律）
+python3 skills/comparison-pricing/scripts/comparison_model.py --cases \
+    skills/comparison-pricing/scripts/sample_cases.csv --as-of 2026-09 --target-area 100 \
+    --hedonic-coefs "朝向=南北:+0.068,楼层=高:+0.092,面积:+0.00059"
+
+# 成本法与假设开发法
+python3 skills/cost-residual/scripts/cost_residual.py --method residual \
+    --dev-value 42000 --build 3200 --dev-years 2 --profit-rate 0.15
+
+# Cap Rate 标定（从租金与价格推导）
+python3 skills/rent-income/scripts/caprate_calibrate.py \
+    --data skills/rent-income/scripts/matched_pr_demo.csv --segment 城市 物业类型
+
+# Conformal 区间（覆盖率检验）
+python3 scripts/uncertainty.py --demo
+
+# 数据适配器：契约实现对照 + 可用性探测 + 演示数据自检
+python3 adapters/registry.py --probe --selftest
+
+# 溯源一致性校验 / 门禁执行
+python3 source/check_manifest.py
+python3 quality-policies/gate_runner.py
 ```
 
 ## 六、使用方法
@@ -110,37 +146,14 @@ python3 scripts/data_adapter.py
 
 ## 七、发布规程（每次更新版本必做）
 
-**发布 = 推送 + 协作授权在册。两者都成功才叫发布完成**——只推送不检查授权，会出现"新版本已上线、但协作者已失去权限"的静默失败。
+**发布 = 推送 + 协作授权在册，两者都成功才叫发布完成。** 协作者 `scubiry-glitch`（scubiry@gmail.com）须持有 **write** 权限，且每次发版都要确认存在——GitHub 的协作邀请 7 天未接受即过期，因此"开通一次"不等于"一直开着"。
 
 ```bash
-# 一步完成：推送版本 + 断言协作授权
-python3 tools/release.py -m "feat: <版本说明> v<x.y.z>"
-
-# 干跑预览（列出将变更的文件，不提交）
-python3 tools/release.py -m "..." --dry-run
+python3 ../ops/release.py -m "feat: <版本说明> v<x.y.z>"   # 推送 + 授权断言，一步到位
 ```
 
-### 固定授权对象（不可省略）
-
-| 项 | 值 |
-|---|---|
-| 仓库 | `weixkcornell/real-estate-pricing-expert` |
-| 协作者 | `scubiry-glitch`（scubiry@gmail.com） |
-| 权限 | `write`（`push`） |
-
-授权断言是**幂等**的：已生效则只核验；临近过期或缺失则自动重新签发。因 GitHub 邀请 **7 天未接受即过期**，单独保活可随时执行：
-
-```bash
-python3 tools/grant_access.py            # 检查 + 按需续期
-python3 tools/grant_access.py --check     # 仅检查
-python3 tools/grant_access.py --force     # 撤销旧邀请并重发（确保邮件送达）
-```
-
-> ⚠️ 邀请为**双向确认**：需对方在 GitHub 点 **Accept invitation**（或访问
-> `https://github.com/weixkcornell/real-estate-pricing-expert/invitations`）后才进入协作者列表。
-> 对方接受前 `/collaborators` 不返回该账号属正常现象，不代表邀请失败。
-
-机制细节、令牌来源、以及为什么不用 Actions 自动跑，见 `tools/README.md`。
+> 发布与授权脚本按评审意见已移至**独立运维目录 `../ops/`**（与定价方法论本体无关，
+> 不应随方法论包发布）。机制细节见 `../ops/README.md`。
 
 ## 八、免责声明
 

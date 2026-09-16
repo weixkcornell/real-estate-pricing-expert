@@ -1,8 +1,8 @@
 {
   "id": "rep-valuation",
   "name": "房地产定价全流程场景",
-  "description": "面向中国房地产市场的端到端定价场景：先核验数据底座，再分别从「交易定价」与「租金与收益法」两个视角研判，最后融合成一份带区间、方法与口径的定价报告。",
-  "version": "0.1.0",
+  "description": "面向中国房地产市场的端到端定价场景：先核验数据底座，再判定数据条件可支撑的方法层级，然后分别从「交易定价」与「租金与收益法」两个视角研判，最后做容差检查与差异归因，融合成一份带区间、方法与口径的定价报告。",
+  "version": "0.2.0",
   "schemaVersion": 2,
   "domain": "valuation",
   "intents": [
@@ -13,47 +13,137 @@
     "价格租金比"
   ],
   "requiredCapabilities": [
+    "rep.datacheck",
+    "rep.crosscheck",
     "rep.hedonic",
+    "rep.attr.decompose",
     "rep.priceindex",
     "rep.spatial",
     "rep.ml.valuation",
-    "rep.rent.income"
+    "rep.rent.income",
+    "rep.caprate.calibrate",
+    "rep.comparison",
+    "rep.cost.residual",
+    "rep.china.adapt"
   ],
   "routingPolicy": {
     "candidateHints": ["rep-001", "rep-002", "docs-coordinator"]
   },
-  "knowledgePolicy": { "required": ["knowledge:rep-001"] },
+  "knowledgePolicy": {
+    "required": [
+      "knowledge:rep-001/blocks/01-hedonic.md",
+      "knowledge:rep-001/blocks/02-price-index.md",
+      "knowledge:rep-001/blocks/03-spatial.md",
+      "knowledge:rep-001/blocks/04-machine-learning.md",
+      "knowledge:rep-001/blocks/05-rent-income.md",
+      "knowledge:rep-001/blocks/06-china-institution.md",
+      "knowledge:rep-001/blocks/07-practice-methods.md",
+      "knowledge:rep-001/index.json"
+    ]
+  },
   "toolPolicy": { "allowed": [] },
   "experts": ["rep-001", "rep-002", "docs-coordinator"],
+  "convergencePolicy": {
+    "purpose": "定义两个视角结论不一致时的处理规则，避免『差异归因』沦为一句空话。",
+    "metric": "|A − B| / A，其中 A 为视角 A（交易定价）的估值中值，B 为视角 B（租金与收益法）的估值中值",
+    "tolerance": 0.15,
+    "tiers": [
+      {
+        "range": "≤ 0.15",
+        "action": "视为相互印证，直接进入融合成文；仍须在报告中同时呈现两法结果与各自口径"
+      },
+      {
+        "range": "0.15 ~ 0.30",
+        "action": "触发差异归因：逐一排查口径差异（挂牌 vs 成交）、样本差异（可比案例 vs 全小区）、方法差异（比较法 vs 收益法）、周期差异（案例成交日 vs 基准日）。归因后重跑受影响的那一侧，最多重跑 2 轮"
+      },
+      {
+        "range": "> 0.30",
+        "action": "**不得直接出结论**：须回退到方法层级判定，检查是否存在数据缺口（如无成交 microdata）、方法误用（如在住宅交易估值中采用成本法作为主结论）、或假设越界（如 π_e 取值过高）。若重跑 2 轮后仍 > 0.30，报告中必须以『两法结论显著背离』作为核心结论输出，并列出双方证据，不做静默择优"
+      }
+    ],
+    "onMaxRetry": "重跑上限 2 轮。达到上限仍超容差时，按『结论背离』如实披露，禁止为求一致而人为调参",
+    "note": "容差是**触发器**而非合格线：超出容差本身不是错误，掩盖背离才是。"
+  },
   "tasks": [
     {
+      "id": "t1-datacheck",
       "subject": "数据底座核验",
-      "description": "核对目标城市/物业类型的成交、挂牌、租金与官方指数数据：指标、最新值、来源、口径、指标代码、截至期。产出数据底座表；后续所有数字引用必须与底座一致；口径冲突显式并列，不静默择优。",
-      "expert": "rep-002"
+      "description": "核对目标城市/物业类型的成交、挂牌、租金与官方指数数据：指标、最新值、单位、来源、口径、指标代码、截至期、标注级。产出数据底座表；后续所有数字引用必须与底座一致；口径冲突显式并列，不静默择优。若某项数据不可得，登记入『缺口清单』并注明获取条件（如『需平台密钥』），不得留空、不得用估算值填充。",
+      "expert": "rep-002",
+      "dependsOn": [],
+      "skills": [],
+      "modules": ["adapters/registry.py", "adapters/local_csv.py", "scripts/data_adapter.py"],
+      "outputs": ["数据底座表", "口径冲突说明", "缺口清单"]
     },
     {
+      "id": "t2-methodtier",
+      "subject": "方法层级判定与降级决策",
+      "description": "依据数据底座的可得性判定本次可支撑的方法层级，并显式记录判定结论——这是防止『用不足的数据跑不该跑的方法』的关键闸门。判定规则：仅有挂牌快照 → 比较法（筛选级，且挂牌须折算成交口径并标注研判推断）；有网签 microdata 且属性完整 → hedonic + 空间计量（分析级）；有重复成交配对 → 价格指数（精细级）；样本充足且需批量估值 → ML-AVM + conformal 区间（生产级）。判定为降级时，必须写明降级原因与升级路径（缺什么数据、补上后可升到哪一级）。",
+      "expert": "rep-001",
+      "dependsOn": ["t1-datacheck"],
+      "skills": ["comparison-pricing", "hedonic-pricing", "price-index", "spatial-ml-valuation"],
+      "outputs": ["方法层级判定", "降级原因说明", "升级路径"],
+      "vetoRule": "若数据条件不支撑任何可给区间的估值方法，本任务直接判定『不具备出估值条件』并终止场景"
+    },
+    {
+      "id": "t3-viewA",
       "subject": "视角 A · 交易定价研判",
-      "description": "基于数据底座做交易定价：先完整阅读 skills/hedonic-pricing/SKILL.md 与 skills/spatial-ml-valuation/SKILL.md。按属性四类建 hedonic 模型，检验并处理空间依赖/异质；样本充足时叠加 ML（RF/XGBoost）并配 SHAP 归因。产出：估值点估计 + 区间 + 属性贡献分解 + 稳健性检验。",
-      "dependsOn": [0],
-      "expert": "rep-001"
+      "description": "基于数据底座与方法层级做交易定价。按最终选定的方法阅读对应 SKILL：比较法读 skills/comparison-pricing/SKILL.md；特征价格读 skills/hedonic-pricing/SKILL.md；空间处理读 skills/spatial-ml-valuation/SKILL.md；成本法/土地读 skills/cost-residual/SKILL.md（须先校准 skills/spatial-ml-valuation/scripts/ml_valuation.py 的实际能力：本包为自研梯度提升与排列重要性，**不得称 XGBoost / SHAP**）。属性调整率优先锚定 hedonic 属性隐含价格。空间依赖用 SAR/SEM、空间异质用 GWR/空间扩展法；**MGWR 与邻接型空间权重本包未实现**，不得声称具备。样本充足时叠加 ML，并按 scripts/uncertainty.py 输出 conformal 区间。产出：估值点估计 + 区间（含区间来源）+ 属性贡献分解 + 稳健性检验 + 方法层级与降级说明。",
+      "expert": "rep-001",
+      "dependsOn": ["t1-datacheck", "t2-methodtier"],
+      "skills": ["comparison-pricing", "hedonic-pricing", "spatial-ml-valuation", "price-index", "cost-residual"],
+      "outputs": ["交易视角估值（点估计 + 区间）", "属性贡献分解", "稳健性检验"]
     },
     {
+      "id": "t4-viewB",
       "subject": "视角 B · 租金与收益法研判",
-      "description": "基于数据底座做租金与收益法定价：先完整阅读 skills/rent-income/SKILL.md 与 skills/price-index/SKILL.md。估计 hedonic 租金模型与租金指数；对商业地产按城市/类型标定 Cap Rate 或做 DCF；构造价格租金比并用用户成本法检验基本面偏离。产出：租金水平/指数 + Cap Rate/价值区间 + 租价背离判断。",
-      "dependsOn": [0],
-      "expert": "rep-001"
+      "description": "基于数据底座做租金与收益法定价。阅读 skills/rent-income/SKILL.md 与 skills/price-index/SKILL.md。估计 hedonic 租金模型与分层时间虚拟租金指数（指数以半对数为主口径）；对商业地产用 caprate_calibrate.py 按城市/类型标定 Cap Rate（**输出为推导值，须标测算/估算，不得写成引用值**），或做 DCF 并给出折现率×退出 cap rate 二维敏感性；构造匹配价格租金比，并用用户成本法**反推隐含预期增值率 π_e**（标研判推断，给敏感性）。租金与收益法结果与交易视角的口径差异必须显式列出。产出：租金水平/指数 + Cap Rate 区间/价值区间 + 隐含 π_e + 租价背离判断。",
+      "expert": "rep-001",
+      "dependsOn": ["t1-datacheck", "t2-methodtier"],
+      "skills": ["rent-income", "price-index"],
+      "outputs": ["租金水平与租金指数", "Cap Rate 区间与价值区间", "隐含 π_e", "租价背离判断"]
     },
     {
-      "subject": "融合成文",
-      "description": "交叉比对视角 A 与视角 B：若交易定价与收益法结论不一致，须做差异归因（口径/样本/方法/周期）。按 output-templates/rep-valuation.json 输出：结论先行、交叉验证、差异归因、风险提示、附录（口径与数据底座）。",
-      "dependsOn": [1, 2],
-      "expert": "docs-coordinator"
+      "id": "t5-fusion",
+      "subject": "容差检查、差异归因与融合成文",
+      "description": "按 convergencePolicy 计算 |A − B| / A 并与容差 0.15 比对：≤ 容差则视为相互印证；15%~30% 触发差异归因并允许对受影响一侧重跑（上限 2 轮）；> 30% 须回退方法层级判定，若重跑 2 轮后仍超限，则以『两法结论显著背离』为核心结论输出并列出双方证据，**不做静默择优**。按 output-templates/rep-valuation.json 成文：结论先行、交叉验证、差异归因、风险提示、附录（口径与数据底座）。",
+      "expert": "docs-coordinator",
+      "dependsOn": ["t3-viewA", "t4-viewB"],
+      "skills": [],
+      "outputs": ["房地产定价报告", "GATE 验收文件"]
     }
   ],
   "deliverable": "房地产定价报告（结构化报告 + 数据底座表 + 方法与口径附录）+ GATE 验收文件",
-  "skill": {
-    "id": "hedonic-pricing",
-    "purpose": "为交易定价任务提供属性分解与建模工艺",
-    "appliesToTaskIndex": 1
-  }
+  "skills": [
+    {
+      "id": "comparison-pricing",
+      "purpose": "比较法工艺：可比案例筛选、差异调整、幅度纪律、区间化。中国实务最高频路径，也是数据不足时的降级路径",
+      "appliesToTasks": ["t2-methodtier", "t3-viewA"]
+    },
+    {
+      "id": "hedonic-pricing",
+      "purpose": "特征价格建模与属性隐含价格分解，为比较法提供调整率锚点、为指数提供时间虚拟",
+      "appliesToTasks": ["t2-methodtier", "t3-viewA"]
+    },
+    {
+      "id": "price-index",
+      "purpose": "重复销售 / 混合 / ML 价格指数，用于期日修正与市场状况调整",
+      "appliesToTasks": ["t2-methodtier", "t3-viewA", "t4-viewB"]
+    },
+    {
+      "id": "spatial-ml-valuation",
+      "purpose": "空间依赖与空间异质处理（SAR/SEM/GWR/回归克里金）与机器学习 AVM（含 conformal 区间）",
+      "appliesToTasks": ["t2-methodtier", "t3-viewA"]
+    },
+    {
+      "id": "rent-income",
+      "purpose": "租金定价、租金指数、匹配价格租金比、用户成本法、Cap Rate 标定与 DCF",
+      "appliesToTasks": ["t4-viewB"]
+    },
+    {
+      "id": "cost-residual",
+      "purpose": "成本法与假设开发法（剩余法）：重置价值与土地估值",
+      "appliesToTasks": ["t3-viewA"]
+    }
+  ]
 }

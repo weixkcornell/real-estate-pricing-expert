@@ -1,0 +1,3 @@
+本目录下全部 CSV 为脚本生成的**合成演示数据**，非真实市场数据。
+用途：验证 adapters/ 与方法链的可运行性。禁止引用为市场数据。
+重新生成：python3 adapters/fixtures/_generate.py

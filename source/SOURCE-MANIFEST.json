@@ -1,29 +1,326 @@
 {
   "pack": "real-estate-pricing-expert",
-  "note": "溯源清单：本包方法论提炼所依据的公开文献与资料，每份材料一行。所有材料均为公开发表文献，授权状态为「公开可引用」。",
+  "note": "溯源清单：本包方法论提炼所依据的公开文献，每份材料一行。所有材料均为公开发表文献，授权状态为「公开可引用」。mat-001~mat-023 为**核心文献**（均已在 knowledge/experts/rep-001/blocks/ 落为结构化知识块）；mat-024 及以后为**支撑引用**（方法原始文献，用于避免把二手概括当作一手来源）。",
   "materials": [
-    { "id": "mat-001", "type": "article", "title": "Hedonic Prices and Implicit Markets: Product Differentiation in Pure Competition", "author": "Rosen, S.", "source": "Journal of Political Economy, 82(1), 34-55, 1974", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-002", "type": "article", "title": "A New Approach to Consumer Theory", "author": "Lancaster, K.", "source": "Journal of Political Economy, 74(2), 132-157, 1966", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-003", "type": "article", "title": "Hedonic Pricing Models: A Selective and Applied Review", "author": "Malpezzi, S.", "source": "Wisconsin-Madison CULER Working Paper 02-05", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-004", "type": "article", "title": "A Regression Method for Real Estate Price Index Construction", "author": "Bailey, M.J., Muth, R.F. & Nourse, H.O.", "source": "JASA, 58(304), 933-942, 1963", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-005", "type": "article", "title": "The Efficiency of the Market for Single-Family Homes", "author": "Case, K.E. & Shiller, R.J.", "source": "American Economic Review, 79(1), 125-137, 1989", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-006", "type": "article", "title": "On Choosing Among House Price Index Methodologies", "author": "Case, B., Pollakowski, H.O. & Wachter, S.M.", "source": "Real Estate Economics, 19(3), 286-307, 1991", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-007", "type": "article", "title": "Changing Tastes: Estimating Changing Attribute Prices in Hedonic and Repeat Sales Models", "author": "Chen, T. & Harding, J.P.", "source": "JREFE, 52, 141-175, 2016; DOI 10.1007/s11146-015-9497-0", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-008", "type": "article", "title": "Combining Property Price Predictions from Repeat Sales and Spatially Enhanced Hedonic Regressions", "author": "Oust, A., Hansen, S.N. & Pettrem, T.R.", "source": "JREFE, 2019; DOI 10.1007/s11146-019-09723-x", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-009", "type": "article", "title": "A Machine Learning Approach to Price Indices: Applications in Commercial Real Estate", "author": "Calainho, F.D., van de Minne, A.M. & Francke, M.K.", "source": "JREFE, 68, 624-653, 2024; DOI 10.1007/s11146-022-09893-1", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-010", "type": "article", "title": "Geographically Weighted Regression: A Method for Exploring Spatial Nonstationarity", "author": "Brunsdon, C., Fotheringham, A.S. & Charlton, M.", "source": "Geographical Analysis, 28(4), 281-298, 1996", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-011", "type": "article", "title": "Incorporating Spatial Variation in Housing Attribute Prices: GWR vs Spatial Expansion", "author": "Bitter, C., Mulligan, G.F. & Dall'erba, S.", "source": "Journal of Geographical Systems, 9(1), 7-27, 2007; DOI 10.1007/s10109-006-0028-7", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-012", "type": "article", "title": "Spatial Statistics and Real Estate", "author": "Pace, R.K. & LeSage, J.P.", "source": "JREFE, 29(2), 147-166, 2004", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-013", "type": "article", "title": "Modelling Housing Rents Using Spatial Autoregressive Geographically Weighted Regression: Cracow, Poland", "author": "—", "source": "ISPRS IJGI, 8(6), 346, 2019; DOI 10.3390/ijgi9060346", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-014", "type": "article", "title": "Predicting property prices with machine learning algorithms", "author": "Ho, W.K.O. et al.", "source": "Journal of Property Research, 2021", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-015", "type": "article", "title": "Irish Property Price Estimation Using A Flexible Geo-spatial Smoothing Approach", "author": "—", "source": "JREFE, 2022; DOI 10.1007/s11146-022-09888-y", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-016", "type": "article", "title": "Big Data in Real Estate? From Manual Appraisal to Automated Valuation", "author": "Kok, N., Koponen, E.-L. & Martinez-Barbosa, C.A.", "source": "Journal of Portfolio Management, 43(5), 2017", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-017", "type": "article", "title": "Valuation in US Commercial Real Estate", "author": "Ghysels, E., Plazzi, A. & Valkanov, R.", "source": "European Financial Management, 13(3), 472-497, 2007; DOI 10.1111/j.1468-036X.2007.00369.x", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-018", "type": "article", "title": "An Integrated Approach to the Evaluation of Commercial Real Estate", "author": "Fisher, J.D., Miles, M.E. & Webb, R.B.", "source": "Journal of Real Estate Research, 1994; DOI 10.1080/10835547.1994.12090743", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-019", "type": "article", "title": "The user cost of housing and the price-rent ratio in Shanghai", "author": "—", "source": "Regional Science and Urban Economics, 89, 103676, 2021", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-020", "type": "article", "title": "Constructing a rental housing index and identifying market segmentation: Beijing, China", "author": "Song, Z., Wilhelmsson, M. & Yang, Z.", "source": "KTH Working Paper 20/10, 2020", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-021", "type": "article", "title": "Spatial Variation in the Determinants of House Prices and Apartment Rents in China", "author": "—", "source": "JREFE, 2011; DOI 10.1007/s11146-010-9262-3", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-022", "type": "article", "title": "China's Urban Housing Reform: Price-Rent Ratio and Market Equilibrium", "author": "Chen, A.", "source": "Urban Studies, 33(7), 1077-1092, 1996", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] },
-    { "id": "mat-023", "type": "article", "title": "Evaluating conditions in major Chinese housing markets", "author": "Wu, J., Gyourko, J. & Deng, Y.", "source": "Regional Science and Urban Economics, 2012/2016", "authorization": "公开可引用", "fileRef": "knowledge/experts/rep-001/", "boundExperts": ["rep-001"] }
-  ]
+    {
+      "id": "mat-001",
+      "type": "article",
+      "title": "Hedonic Prices and Implicit Markets: Product Differentiation in Pure Competition",
+      "author": "Rosen, S.",
+      "source": "Journal of Political Economy, 82(1), 34-55, 1974",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/01-hedonic.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-002",
+      "type": "article",
+      "title": "A New Approach to Consumer Theory",
+      "author": "Lancaster, K.",
+      "source": "Journal of Political Economy, 74(2), 132-157, 1966",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/01-hedonic.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-003",
+      "type": "article",
+      "title": "Hedonic Pricing Models: A Selective and Applied Review",
+      "author": "Malpezzi, S.",
+      "source": "Wisconsin-Madison CULER Working Paper 02-05",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/01-hedonic.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-004",
+      "type": "article",
+      "title": "A Regression Method for Real Estate Price Index Construction",
+      "author": "Bailey, M.J., Muth, R.F. & Nourse, H.O.",
+      "source": "JASA, 58(304), 933-942, 1963",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/02-price-index.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-005",
+      "type": "article",
+      "title": "The Efficiency of the Market for Single-Family Homes",
+      "author": "Case, K.E. & Shiller, R.J.",
+      "source": "American Economic Review, 79(1), 125-137, 1989",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/02-price-index.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-006",
+      "type": "article",
+      "title": "On Choosing Among House Price Index Methodologies",
+      "author": "Case, B., Pollakowski, H.O. & Wachter, S.M.",
+      "source": "Real Estate Economics, 19(3), 286-307, 1991",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/02-price-index.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-007",
+      "type": "article",
+      "title": "Changing Tastes: Estimating Changing Attribute Prices in Hedonic and Repeat Sales Models",
+      "author": "Chen, T. & Harding, J.P.",
+      "source": "JREFE, 52, 141-175, 2016; DOI 10.1007/s11146-015-9497-0",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/01-hedonic.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-008",
+      "type": "article",
+      "title": "Combining Property Price Predictions from Repeat Sales and Spatially Enhanced Hedonic Regressions",
+      "author": "Oust, A., Hansen, S.N. & Pettrem, T.R.",
+      "source": "JREFE, 2019; DOI 10.1007/s11146-019-09723-x",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/03-spatial.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-009",
+      "type": "article",
+      "title": "A Machine Learning Approach to Price Indices: Applications in Commercial Real Estate",
+      "author": "Calainho, F.D., van de Minne, A.M. & Francke, M.K.",
+      "source": "JREFE, 68, 624-653, 2024; DOI 10.1007/s11146-022-09893-1",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/02-price-index.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-010",
+      "type": "article",
+      "title": "Geographically Weighted Regression: A Method for Exploring Spatial Nonstationarity",
+      "author": "Brunsdon, C., Fotheringham, A.S. & Charlton, M.",
+      "source": "Geographical Analysis, 28(4), 281-298, 1996",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/03-spatial.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-011",
+      "type": "article",
+      "title": "Incorporating Spatial Variation in Housing Attribute Prices: GWR vs Spatial Expansion",
+      "author": "Bitter, C., Mulligan, G.F. & Dall'erba, S.",
+      "source": "Journal of Geographical Systems, 9(1), 7-27, 2007; DOI 10.1007/s10109-006-0028-7",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/03-spatial.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-012",
+      "type": "article",
+      "title": "Spatial Statistics and Real Estate",
+      "author": "Pace, R.K. & LeSage, J.P.",
+      "source": "JREFE, 29(2), 147-166, 2004",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/03-spatial.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-013",
+      "type": "article",
+      "title": "Modelling Housing Rents Using Spatial Autoregressive Geographically Weighted Regression: Cracow, Poland",
+      "author": "—",
+      "source": "ISPRS IJGI, 8(6), 346, 2019; DOI 10.3390/ijgi9060346",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/03-spatial.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-014",
+      "type": "article",
+      "title": "Predicting property prices with machine learning algorithms",
+      "author": "Ho, W.K.O. et al.",
+      "source": "Journal of Property Research, 2021",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/04-machine-learning.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-015",
+      "type": "article",
+      "title": "Irish Property Price Estimation Using A Flexible Geo-spatial Smoothing Approach",
+      "author": "—",
+      "source": "JREFE, 2022; DOI 10.1007/s11146-022-09888-y",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/04-machine-learning.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-016",
+      "type": "article",
+      "title": "Big Data in Real Estate? From Manual Appraisal to Automated Valuation",
+      "author": "Kok, N., Koponen, E.-L. & Martinez-Barbosa, C.A.",
+      "source": "Journal of Portfolio Management, 43(5), 2017",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/04-machine-learning.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-017",
+      "type": "article",
+      "title": "Valuation in US Commercial Real Estate",
+      "author": "Ghysels, E., Plazzi, A. & Valkanov, R.",
+      "source": "European Financial Management, 13(3), 472-497, 2007; DOI 10.1111/j.1468-036X.2007.00369.x",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/05-rent-income.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-018",
+      "type": "article",
+      "title": "An Integrated Approach to the Evaluation of Commercial Real Estate",
+      "author": "Fisher, J.D., Miles, M.E. & Webb, R.B.",
+      "source": "Journal of Real Estate Research, 1994; DOI 10.1080/10835547.1994.12090743",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/05-rent-income.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-019",
+      "type": "article",
+      "title": "The user cost of housing and the price-rent ratio in Shanghai",
+      "author": "—",
+      "source": "Regional Science and Urban Economics, 89, 103676, 2021",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/05-rent-income.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-020",
+      "type": "article",
+      "title": "Constructing a rental housing index and identifying market segmentation: Beijing, China",
+      "author": "Song, Z., Wilhelmsson, M. & Yang, Z.",
+      "source": "KTH Working Paper 20/10, 2020",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/05-rent-income.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-021",
+      "type": "article",
+      "title": "Spatial Variation in the Determinants of House Prices and Apartment Rents in China",
+      "author": "—",
+      "source": "JREFE, 2011; DOI 10.1007/s11146-010-9262-3",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/06-china-institution.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-022",
+      "type": "article",
+      "title": "China's Urban Housing Reform: Price-Rent Ratio and Market Equilibrium",
+      "author": "Chen, A.",
+      "source": "Urban Studies, 33(7), 1077-1092, 1996",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/06-china-institution.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-023",
+      "type": "article",
+      "title": "Evaluating conditions in major Chinese housing markets",
+      "author": "Wu, J., Gyourko, J. & Deng, Y.",
+      "source": "Regional Science and Urban Economics, 2012/2016",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/06-china-institution.md",
+      "boundExperts": [
+        "rep-001"
+      ]
+    },
+    {
+      "id": "mat-024",
+      "type": "article",
+      "title": "Random Forests",
+      "author": "Breiman, L.",
+      "source": "Machine Learning, 45(1), 5-32, 2001; DOI 10.1023/A:1010933404324",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/04-machine-learning.md",
+      "boundExperts": [
+        "rep-001"
+      ],
+      "role": "支撑引用（随机森林方法原始文献；房地产应用见 mat-014）"
+    },
+    {
+      "id": "mat-025",
+      "type": "article",
+      "title": "Assessing High House Prices: Bubbles, Fundamentals and Misperceptions",
+      "author": "Himmelberg, C., Mayer, C. & Sinai, T.",
+      "source": "Journal of Economic Perspectives, 19(4), 67-92, 2005; DOI 10.1257/089533005775196769",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/05-rent-income.md",
+      "boundExperts": [
+        "rep-001"
+      ],
+      "role": "支撑引用（用户成本法原始框架；中国应用见 mat-019 / mat-023）"
+    },
+    {
+      "id": "mat-026",
+      "type": "article",
+      "title": "A Simple Hybrid Model for Estimating Real Estate Price Indexes",
+      "author": "Quigley, J.M.",
+      "source": "Journal of Housing Economics, 4(1), 1-12, 1995; DOI 10.1006/jhec.1995.1001",
+      "authorization": "公开可引用",
+      "fileRef": "knowledge/experts/rep-001/blocks/02-price-index.md",
+      "boundExperts": [
+        "rep-001"
+      ],
+      "role": "支撑引用（混合指数原始文献：把重复销售与特征价格合并估计）"
+    }
+  ],
+  "citationPolicy": {
+    "rule": "**包内任何位置引用文献，必须使用本清单登记的 mat-id 或明确的作者-年份-出处**，禁止出现无法对应到本清单的文献标签。",
+    "enforcement": "source/check_manifest.py 提供自动校验（CI 可接入）；执行 `python3 source/check_manifest.py`。",
+    "reason": "此前包内存在 5 处「幽灵引用」（Istanbul 2025 / Kain & Quigley 1970 / Helbich et al. 2014 / France 2020 等），引用了未登记的材料——这类引用看起来增加了权威性，实际上无法核验，与「无授权来源不入库」的纪律冲突。"
+  }
 }

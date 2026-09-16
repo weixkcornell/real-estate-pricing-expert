@@ -215,7 +215,7 @@ class DataAdapter:
 
     def build_price_rent_panel(self, sale_rows, rent_rows, area_col, sale_price_col, rent_col):
         """
-        为「匹配价格租金比」准备两侧数据（Shanghai 2021 要求属性集一致）。
+        为「匹配价格租金比」准备两侧数据（mat-019 要求属性集一致）。
         """
         common = []
         s_cols = set(sale_rows[0].keys()) if sale_rows else set()
@@ -223,7 +223,7 @@ class DataAdapter:
         common = sorted((s_cols & r_cols) - {sale_price_col, rent_col})
         return {"sale": sale_rows, "rent": rent_rows, "common_attributes": common,
                 "note": ("价格与租金 hedonic 必须使用**相同属性集**才能构造可比价租比"
-                         "（Shanghai 2021）；当前共同属性：%s" % (common or "无，需补充")),
+                         "（mat-019 要求）；当前共同属性：%s" % (common or "无，需补充")),
                 "area_col": area_col}
 
     # ---------------------------------------------------------- 交叉校验

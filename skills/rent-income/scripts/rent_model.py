@@ -73,12 +73,12 @@ from core import read_csv, to_float, ols, mean, median, quantile, metrics, fmt_t
 
 class HedonicRentModel:
     """
-    hedonic 租金模型（Song et al. 2020；Shanghai 2021）。
+    hedonic 租金模型（mat-020 Song et al. 2020；mat-019 上海价格租金比 (2021)）。
 
         ln(R) = Xβ + ε        （半对数，β 经 exp(β)−1 转百分比效应）
         ln(R) = ln(X)β + ε    （双对数，β 为弹性）
 
-    与房价 hedonic 使用**相同属性集**，才能构造可比的价租比（Shanghai 2021 关键要求）。
+    与房价 hedonic 使用**相同属性集**，才能构造可比的价租比（mat-019 的关键要求）。
     """
 
     def __init__(self, rent_col, x_names, form="log-linear"):
@@ -251,7 +251,7 @@ def matched_price_rent_ratio(sale_rows, rent_rows, x_names,
                             sale_price_col="成交价", rent_col="月租(元)",
                             sale_time_col=None, rent_time_col=None):
     """
-    匹配 hedonic 价格租金比（Shanghai 2021 的核心方法）。
+    匹配 hedonic 价格租金比（mat-019 的核心方法）。
 
     论文要点：价租比必须在**同一属性集**上估计两套 hedonic（价格方程与租金方程），
     再互相插补得到每套物业的匹配价格与租金，才能计算可比的价格租金比。
@@ -293,7 +293,7 @@ def matched_price_rent_ratio(sale_rows, rent_rows, x_names,
 def user_cost_model(price, annual_rent, mortgage_rate, maintenance=0.01, property_tax=0.004,
                     tx_cost_amort=0.005, expected_growth=0.0, tax_deduct=0.0):
     """
-    用户成本法（Himmelberg et al. 2005；Wu, Gyourko & Deng 2012/2016；Shanghai 2021）。
+    用户成本法（mat-025 Himmelberg et al. 2005；mat-023 Wu, Gyourko & Deng；mat-019 上海 (2021)）。
 
         单期用户成本（占房价比）：
             UC = (1 − t)·r + δ + m + τ − g
@@ -398,7 +398,7 @@ def main():
             print("  n=%d  MAE=%.0f  MAPE=%.2f%%  R²=%.3f" % (ev["n"], ev["MAE"], ev["MAPE"], ev["R2"]))
         if args.time:
             r = stratified_rent_index(rows, args.rent, args.time, args.x, args.strata)
-            print("\n=== 分层时间虚拟变量租金指数（France 2020）===")
+            print("\n=== 分层时间虚拟变量租金指数（mat-020 Song et al. 2020；分市场租金指数）===")
             if isinstance(r, dict) and r and "index" in next(iter(r.values()), {}):
                 for g, sub in r.items():
                     if not sub:
@@ -413,7 +413,7 @@ def main():
                         "%s:%.2f" % (p, r["index_selected"][p]) for p in r["periods"]))
                 if r["lambda"] is not None and abs(r["lambda"]) > 0.05:
                     print("  ⚠ λ 明显偏离 0：说明函数形式可能非对数；两个口径指数若分化，"
-                          "须说明以半对数为主口径的理由（France 2020 亦以分层时间虚拟为主）")
+                          "须说明以半对数为主口径的理由（mat-020 亦以分层时间虚拟为主）")
             else:
                 print("  （时间期数不足，跳过）")
 
@@ -423,7 +423,7 @@ def main():
         print("  售价 %.0f 元/㎡ | 单位租金 %.1f 元/㎡/月 | 年租金 %.1f 元/㎡" % (args.price, args.rent_per_sqm, annual))
         print("  毛租金收益率 = %.2f%%   价格租金比 = %.1f 年" % (annual / args.price * 100, args.price / annual))
         uc = user_cost_model(args.price, annual, args.fin_rate or 0.0305)
-        print("\n=== 用户成本法（Wu-Gyourko-Deng 2012/2016；Shanghai 2021）===")
+        print("\n=== 用户成本法（mat-025 Himmelberg et al. 2005；mat-023；mat-019 上海 2021）===")
         p = uc["params"]
         print("  UC = (1−%.2f)×%.2f%% + %.1f%% + %.1f%% + %.1f%% − %.1f%% = %.2f%%"
               % (p["t"], p["r"] * 100, p["delta"] * 100, p["m"] * 100, p["tau"] * 100, p["g"] * 100, uc["user_cost_UC"] * 100))

@@ -1,0 +1,40 @@
+{
+  "id": "eval-spatial-001",
+  "capability": "rep.spatial",
+  "question": "我用全样本 OLS 做了房价模型，R² 0.7，这结果可靠吗？直接给我系数。",
+  "inputData": {
+    "数据说明": "合成演示数据：城市截面房价样本（含坐标）",
+    "字段": "单价、面积、楼龄、x坐标、y坐标",
+    "位置": "adapters/fixtures/sample_spatial.csv（合成生成）",
+    "口径": "网签备案成交口径"
+  },
+  "expectedAnswer": {
+    "mustMention": [
+      "须检验空间依赖（Moran's I）",
+      "存在空间自相关时 OLS 偏误",
+      "应改空间模型（SAR / GWR）",
+      "空间异质需处理",
+      "不能直接用全局 OLS 系数"
+    ],
+    "mustNotClaim": [
+      "OLS 结果可直接用",
+      "全局系数可靠",
+      "忽略空间依赖"
+    ],
+    "expectedRange": null,
+    "expectedCaliber": "网签"
+  },
+  "rubric": [
+    {"dimension": "关键方法要点覆盖", "weight": 0.30, "manual": false, "check": "mustMention",
+     "levels": ["1分：完全遗漏关键要点", "2分：覆盖不超过1/3要点", "3分：覆盖约半数要点", "4分：覆盖至少2/3要点", "5分：覆盖全部要点并展开说明"]},
+    {"dimension": "禁区与反模式规避", "weight": 0.25, "manual": false, "check": "mustNotClaim",
+     "levels": ["1分：出现被禁止的说法/混称（踩中反模式）", "2分：部分禁区未规避", "3分：基本规避但表述含糊", "4分：明确规避并说明原因", "5分：明确规避且主动提示风险与不确定性"]},
+    {"dimension": "数据口径与来源声明", "weight": 0.20, "manual": false, "check": "expectedCaliber",
+     "levels": ["1分：未声明任何口径或来源，数字不可追溯", "2分：提及口径但缺来源或截至期", "3分：口径与来源齐全、可复现", "4分：多源交叉验证且一致", "5分：多源+指标代码+口径声明齐全，数据底座单一真源"]},
+    {"dimension": "区间与不确定性披露", "weight": 0.15, "manual": true,
+     "levels": ["1分：仅点估计，无区间", "2分：有区间但未说明来源", "3分：区间来源明确且与数据层级匹配", "4分：区间来源明确+覆盖率或校准检验", "5分：区间来源明确+覆盖率检验+多源不确定性合成"]},
+    {"dimension": "解释深度与证据链", "weight": 0.10, "manual": true,
+     "levels": ["1分：结论无方法依据", "2分：有方法但未展开", "3分：方法+数据底座清晰", "4分：方法清晰+稳健性检验", "5分：方法清晰+稳健性+替代方法交叉验证"]}
+  ],
+  "dataProvenance": "合成演示数据（adapters/fixtures/sample_spatial.csv 由脚本合成生成）；非真实成交。"
+}
